@@ -1,0 +1,299 @@
+/* ==================== GLOBAL VE RESET ==================== */
+:root {
+    --color-primary: #FF5722; /* Turuncu Vurgu */
+    --color-secondary: #00BCD4; /* Mavi Vurgu */
+    --color-bg-dark: #121212;
+    --color-bg-card: #1E1E1E;
+    --color-text-light: #E0E0E0;
+    --color-text-subtle: #A9A9A9;
+    --spacing-large: 50px;
+    --spacing-medium: 30px;
+    --max-content-width: 1200px;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    margin: 0; 
+    padding: 0;
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-light);
+    line-height: 1.6;
+}
+
+/* ==================== HEADER VE NAVİGASYON ==================== */
+.site-header {
+    background-color: var(--color-bg-card); 
+    border-bottom: 2px solid var(--color-primary); 
+    padding: 15px 5vw; 
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    box-shadow: 0 1px 15px rgba(0, 0, 0, 0.7); 
+}
+.header-brand {
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+}
+.brand-logo {
+    height: 45px; 
+    width: auto; 
+}
+.brand-title {
+    font-size: 1.7em; 
+    font-weight: 700; 
+    color: var(--color-text-light); 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+}
+.nav-list {
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+    display: flex; 
+}
+.nav-link {
+    color: var(--color-text-subtle);
+    text-decoration: none; 
+    padding: 10px 18px;
+    display: block;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+.nav-link:hover,
+.nav-link--active {
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+}
+
+/* =============== SLIDER ALANI (PENCERELİ TASARIM) =============== */
+
+.hero-slider-wrapper {
+    /* Slider'ın arkasındaki alanı karartmak ve ortalamak için */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70vh; /* Ekran yüksekliğinin %70'ini kaplar */
+    background-color: rgba(0, 0, 0, 0.8); /* Dış alan koyu */
+    padding: 20px;
+}
+
+.slider-container {
+    /* Pencere görünümünü veren ana container */
+    width: 80%; 
+    max-width: 1000px; 
+    height: 100%;
+    position: relative;
+    overflow: hidden; 
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9); 
+    border-radius: 12px;
+    background-color: var(--color-bg-dark);
+}
+
+.slider-track {
+    display: flex;
+    width: 300%; /* Slayt sayısı * 100% */
+    height: 100%;
+    transition: transform 1.0s ease-in-out; 
+    
+    /* GPU hızlandırma (Pürüzsüz geçiş ve boşluksuz render için kritik) */
+    transform: translate3d(0, 0, 0); 
+    will-change: transform; 
+    backface-visibility: hidden; 
+}
+
+.slider-slide {
+    width: 100%; 
+    flex-shrink: 0; 
+    height: 100%;
+    transform: translate3d(0, 0, 0); 
+}
+
+.slide-image {
+    /* KRİTİK AYAR: Pencereyi tamamen doldurur (Görsellerinizin oranını ayarlarsanız tam sığar) */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    display: block;
+}
+
+/* Slider Kontrolleri (Butonlar) */
+.slider-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1); 
+    color: #FFFFFF; 
+    border: none;
+    padding: 15px 20px; 
+    cursor: pointer;
+    z-index: 10;
+    font-size: 28px; 
+    border-radius: 8px; 
+    transition: background-color 0.3s, color 0.3s;
+    opacity: 0.8;
+}
+.slider-control:hover {
+    background: var(--color-primary); 
+    opacity: 1;
+}
+.slider-control--prev {
+    left: 20px;
+}
+.slider-control--next {
+    right: 20px;
+}
+/* Butonları slider konteynerinin içine konumlandırmak için düzeltme */
+.slider-container > .slider-control--prev { left: 10px; }
+.slider-container > .slider-control--next { right: 10px; }
+
+
+/* ==================== ANA İÇERİK VE KARTLAR ==================== */
+
+.main-content-wrapper {
+    max-width: var(--max-content-width); 
+    margin: 0 auto; 
+    padding: 0 20px var(--spacing-large) 20px; 
+}
+
+.section {
+    padding: var(--spacing-medium) 0;
+}
+.section--welcome {
+    text-align: center; 
+    padding: var(--spacing-large) 0;
+}
+.heading-primary {
+    color: var(--color-primary); 
+    font-size: 2.8em; 
+    margin-bottom: 15px;
+}
+.text-lead {
+    font-size: 1.1em;
+    color: var(--color-text-subtle); 
+    max-width: 800px;
+    margin: 0 auto;
+}
+.divider {
+    border: 0;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.1); 
+    margin: var(--spacing-large) 0;
+}
+.heading-secondary {
+    color: var(--color-text-light); 
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: var(--spacing-medium);
+    border-left: 5px solid var(--color-secondary);
+    padding-left: 15px;
+}
+
+/* Film Kartları (Grid) */
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px; 
+}
+.movie-card {
+    background-color: var(--color-bg-card); 
+    border-radius: 10px; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); 
+    overflow: hidden; 
+    transition: transform 0.3s, box-shadow 0.3s; 
+}
+.movie-card:hover {
+    transform: translateY(-8px); 
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8); 
+    cursor: pointer;
+}
+.movie-card__figure {
+    position: relative;
+    height: 400px;
+    margin: 0;
+}
+.movie-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    display: block;
+}
+.movie-card__rating {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--color-primary);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.9em;
+}
+.movie-card__content {
+    padding: 15px;
+    text-align: center;
+}
+.movie-card__title {
+    color: var(--color-text-light); 
+    margin: 0 0 5px 0;
+    font-size: 1.3em;
+}
+.movie-card__meta {
+    color: var(--color-text-subtle); 
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+.movie-card__button {
+    background-color: var(--color-secondary);
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+.movie-card__button:hover {
+    background-color: #008c9f; 
+}
+
+/* ==================== FOOTER ==================== */
+.site-footer {
+    text-align: center;
+    padding: 30px;
+    background-color: #000000; 
+    color: var(--color-text-subtle); 
+    margin-top: var(--spacing-large);
+    font-size: 0.9em;
+}
+
+/* ==================== DUYARLI TASARIM (RESPONSIVE) ==================== */
+@media (max-width: 768px) {
+    .site-header {
+        flex-direction: column;
+    }
+    .main-nav {
+        margin-top: 10px;
+    }
+    .brand-title {
+        font-size: 1.5em;
+    }
+    .hero-slider-wrapper {
+        height: 50vh;
+    }
+    .slider-container {
+        width: 95%; 
+        height: 100%;
+    }
+    .movie-grid {
+        grid-template-columns: 1fr;
+    }
+    .slider-control {
+        font-size: 20px;
+        padding: 8px 12px;
+    }
+}
