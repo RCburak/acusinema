@@ -71,18 +71,16 @@ body {
 /* =============== SLIDER ALANI (PENCERELİ TASARIM) =============== */
 
 .hero-slider-wrapper {
-    /* Slider'ın arkasındaki alanı karartmak ve ortalamak için */
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 70vh; /* Ekran yüksekliğinin %70'ini kaplar */
-    background-color: rgba(0, 0, 0, 0.8); /* Dış alan koyu */
+    height: 70vh;
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
 }
 
 .slider-container {
-    /* Pencere görünümünü veren ana container */
     width: 80%; 
     max-width: 1000px; 
     height: 100%;
@@ -98,22 +96,20 @@ body {
     width: 300%; /* Slayt sayısı * 100% */
     height: 100%;
     transition: transform 1.0s ease-in-out; 
-    
-    /* GPU hızlandırma (Pürüzsüz geçiş ve boşluksuz render için kritik) */
     transform: translate3d(0, 0, 0); 
     will-change: transform; 
     backface-visibility: hidden; 
 }
 
+/* DÜZELTME BURADA YAPILDI */
 .slider-slide {
-    width: 100%; 
+    width: calc(100% / 3); /* Toplam genişliği 3 slayta bölüyoruz */
     flex-shrink: 0; 
     height: 100%;
     transform: translate3d(0, 0, 0); 
 }
 
 .slide-image {
-    /* KRİTİK AYAR: Pencereyi tamamen doldurur (Görsellerinizin oranını ayarlarsanız tam sığar) */
     width: 100%;
     height: 100%;
     object-fit: cover; 
@@ -146,7 +142,6 @@ body {
 .slider-control--next {
     right: 20px;
 }
-/* Butonları slider konteynerinin içine konumlandırmak için düzeltme */
 .slider-container > .slider-control--prev { left: 10px; }
 .slider-container > .slider-control--next { right: 10px; }
 
