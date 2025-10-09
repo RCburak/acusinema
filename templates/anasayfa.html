@@ -4,24 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acusinema | Anasayfa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/anasayfa.css">
 </head>
 <body>
 
     <header class="site-header">
-        <div class="header-brand">
-            <img src="/static/images/aculogo.jpg" alt="Acusinema Logo" class="brand-logo">
-            <span class="brand-title">ACUSİNEMA</span>
+        <div class="header-main">
+            <a href="{% url 'anasayfa' %}" class="brand-link">
+                <div class="header-brand">
+                    <img src="/static/images/aculogo.jpg" alt="Acusinema Logo" class="brand-logo">
+                    <span class="brand-title">ACUSİNEMA</span>
+                </div>
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link nav-link--active">Anasayfa</a></li>
+                    <li class="nav-item"><a href="{% url 'filmler' %}" class="nav-link">Filmler</a></li>
+                    <li class="nav-item"><a href="{% url 'etkinlikler' %}" class="nav-link">Etkinlikler</a></li>
+                    <li class="nav-item"><a href="{% url 'iletisim' %}" class="nav-link">İletişim</a></li>
+                </ul>
+            </nav>
         </div>
-        
-        <nav class="main-nav">
-            <ul class="nav-list">
-                <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link nav-link--active">Anasayfa</a></li>
-                <li class="nav-item"><a href="{% url 'filmler' %}" class="nav-link">Filmler</a></li>
-                <li class="nav-item"><a href="{% url 'etkinlikler' %}" class="nav-link">Etkinlikler</a></li>
-                <li class="nav-item"><a href="{% url 'iletisim' %}" class="nav-link">İletişim</a></li>
-            </ul>
-        </nav>
+
+        <div class="header-auth">
+            {% if user.is_authenticated %}
+                <span class="user-greeting">Hoş geldin, {{ user.username }}</span>
+                <a href="#" class="auth-link logout-btn">
+                    <i class="icon-logout"></i> Çıkış Yap
+                </a>
+            {% else %}
+                <a href="#" class="auth-link login-btn">
+                    <i class="icon-login"></i> Giriş Yap
+                </a>
+            {% endif %}
+        </div>
     </header>
 
     <section class="hero-slider-wrapper">
@@ -55,39 +75,39 @@
         <hr class="divider">
         
         <section class="section section--popular">
-            <h2 class="heading-secondary">Filmler</h2>
+            <h2 class="heading-secondary">Vizyondaki Filmler</h2>
             <div class="movie-grid">
                 
                 <article class="movie-card">
                     <figure class="movie-card__figure">
-                         <img src="/static/images/prestij.jpg" alt="Film Adı 1 Afişi" class="movie-card__image">
+                         <img src="/static/images/prestij.jpg" alt="Prestij Afişi" class="movie-card__image">
                          <figcaption class="movie-card__rating">8.5</figcaption>
                     </figure>
                     <div class="movie-card__content">
-                        <h3 class="movie-card__title">Film Adı 1</h3>
-                        <p class="movie-card__meta">Gerilim, Dram | 142 dk</p>
+                        <h3 class="movie-card__title">Prestij</h3>
+                        <p class="movie-card__meta">Gerilim, Dram | 130 dk</p>
                         <button class="movie-card__button">Rezervasyon Yap</button>
                     </div>
                 </article>
                 <article class="movie-card">
                     <figure class="movie-card__figure">
-                        <img src="/static/images/interstellar1.jpg" alt="Film Adı 2 Afişi" class="movie-card__image">
-                        <figcaption class="movie-card__rating">9.1</figcaption>
+                        <img src="/static/images/interstellar1.jpg" alt="Yıldızlararası Afişi" class="movie-card__image">
+                        <figcaption class="movie-card__rating">8.7</figcaption>
                     </figure>
                     <div class="movie-card__content">
-                        <h3 class="movie-card__title">Film Adı 2</h3>
-                        <p class="movie-card__meta">Aksiyon, Bilim Kurgu | 165 dk</p>
+                        <h3 class="movie-card__title">Yıldızlararası</h3>
+                        <p class="movie-card__meta">Bilim Kurgu, Macera | 169 dk</p>
                         <button class="movie-card__button">Rezervasyon Yap</button>
                     </div>
                 </article>
                 <article class="movie-card">
                     <figure class="movie-card__figure">
-                        <img src="/static/images/recepivedik.jpg" alt="Film Adı 3 Afişi" class="movie-card__image">
-                        <figcaption class="movie-card__rating">7.8</figcaption>
+                        <img src="/static/images/recepivedik.jpg" alt="Recep İvedik Afişi" class="movie-card__image">
+                        <figcaption class="movie-card__rating">4.5</figcaption>
                     </figure>
                     <div class="movie-card__content">
-                        <h3 class="movie-card__title">Film Adı 3</h3>
-                        <p class="movie-card__meta">Komedi, Romantik | 98 dk</p>
+                        <h3 class="movie-card__title">Recep İvedik</h3>
+                        <p class="movie-card__meta">Komedi | 90 dk</p>
                         <button class="movie-card__button">Rezervasyon Yap</button>
                     </div>
                 </article>

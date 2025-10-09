@@ -4,24 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acusinema | Filmler</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/anasayfa.css">
-    <link rel="stylesheet" href="/static/iletisim.css"> <link rel="stylesheet" href="/static/filmler.css"> </head>
+    <link rel="stylesheet" href="/static/iletisim.css">
+    <link rel="stylesheet" href="/static/filmler.css">
+</head>
 <body>
 
     <header class="site-header">
-        <div class="header-brand">
-            <img src="/static/images/aculogo.jpg" alt="Acusinema Logo" class="brand-logo">
-            <span class="brand-title">ACUSİNEMA</span>
+        <div class="header-main">
+            <a href="{% url 'anasayfa' %}" class="brand-link">
+                <div class="header-brand">
+                    <img src="/static/images/aculogo.jpg" alt="Acusinema Logo" class="brand-logo">
+                    <span class="brand-title">ACUSİNEMA</span>
+                </div>
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link">Anasayfa</a></li>
+                    <li class="nav-item"><a href="{% url 'filmler' %}" class="nav-link nav-link--active">Filmler</a></li>
+                    <li class="nav-item"><a href="{% url 'etkinlikler' %}" class="nav-link">Etkinlikler</a></li>
+                    <li class="nav-item"><a href="{% url 'iletisim' %}" class="nav-link">İletişim</a></li>
+                </ul>
+            </nav>
         </div>
-        
-        <nav class="main-nav">
-            <ul class="nav-list">
-                <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link">Anasayfa</a></li>
-                <li class="nav-item"><a href="{% url 'filmler' %}" class="nav-link nav-link--active">Filmler</a></li>
-                <li class="nav-item"><a href="{% url 'etkinlikler' %}" class="nav-link">Etkinlikler</a></li>
-                <li class="nav-item"><a href="{% url 'iletisim' %}" class="nav-link">İletişim</a></li>
-            </ul>
-        </nav>
+        <div class="header-auth">
+            {% if user.is_authenticated %}
+                <span class="user-greeting">Hoş geldin, {{ user.username }}</span>
+                <a href="#" class="auth-link logout-btn"> <i class="icon-logout"></i> Çıkış Yap
+                </a>
+            {% else %}
+                <a href="#" class="auth-link login-btn"> <i class="icon-login"></i> Giriş Yap
+                </a>
+            {% endif %}
+        </div>
     </header>
 
     <main class="main-content-wrapper">
@@ -90,7 +109,7 @@
                         <button class="movie-card__button">Detayları Gör</button>
                     </div>
                 </article>
-                <article class="movie-card">
+                 <article class="movie-card">
                     <figure class="movie-card__figure">
                          <img src="/static/images/film-placeholder-1.jpg" alt="Film 4 Afişi" class="movie-card__image">
                          <figcaption class="movie-card__rating">7.9</figcaption>
