@@ -12,10 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const transitionTime = 3000;
     let autoSlideInterval;
 
-    // Slaytı kaydırma pozisyonuna ayarlar
+    // Slaytı kaydırma pozisyonuna ayarlar (DÜZELTİLMİŞ FONKSİYON)
     function updateSlidePosition() {
-        // Kaydırma miktarı = - (Mevcut slayt indeksi * %100)
-        const offset = currentSlideIndex * -100;
+        // DOĞRU HESAPLAMA: Kaydırma miktarını toplam slayt sayısına bölüyoruz.
+        const offset = (currentSlideIndex / totalSlides) * -100;
         track.style.transform = `translateX(${offset}%)`;
     }
 
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         startAutoSlide(); // Tekrar başlat
     });
 
-    // KRİTİK DÜZELTME: Sayfa yüklendiğinde slaytı 0. pozisyonda sabitler.
+    // Sayfa yüklendiğinde slaytı 0. pozisyonda sabitler.
     updateSlidePosition();
 
     // Başlangıçta otomatik kaydırmayı başlat

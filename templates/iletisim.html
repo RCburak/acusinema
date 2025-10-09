@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acusinema | İletişim</title>
+    <link rel="stylesheet" href="/static/anasayfa.css">
+    <link rel="stylesheet" href="/static/iletisim.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-brand">
+            <img src="/static/images/aculogo.jpg" alt="Acusinema Logo" class="brand-logo">
+            <span class="brand-title">ACUSİNEMA</span>
+        </div>
+        
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link">Anasayfa</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Filmler</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Etkinlikler</a></li>
+                <li class="nav-item"><a href="{% url 'iletisim' %}" class="nav-link nav-link--active">İletişim</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content-wrapper">
+        <section class="section section--welcome">
+            <h1 class="heading-primary">Bize Ulaşın</h1>
+            <p class="text-lead">
+                Soru, öneri veya iş birliği talepleriniz için bizimle iletişime geçmekten çekinmeyin.
+            </p>
+        </section>
+        
+        <hr class="divider">
+
+        <section class="section">
+            <div class="contact-grid">
+                <div class="contact-details">
+                    <h2 class="heading-secondary">İletişim Bilgileri</h2>
+                    <ul class="contact-list">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            <span>Acıbadem Mehmet Ali Aydınlar Üniversitesi, İçerenköy, Kayışdağı Cd. No:32-36, 34638 Ataşehir/İstanbul</span>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            <a href="mailto:Muslum.Fincan@live.acibadem.edu.tr">Muslum.Fincan@live.acibadem.edu.tr</a>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            <a href="mailto:Zeynep.Karaca@live.acibadem.edu.tr">Zeynep.Karaca@live.acibadem.edu.tr</a>
+                        </li>
+                    </ul>
+
+                    <h2 class="heading-secondary" style="margin-top: 40px;">Sosyal Medya</h2>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/acibademsinema/" target="_blank" rel="noopener noreferrer" title="Instagram">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+                            <span>acibademsinema</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="contact-form-container">
+                    <h2 class="heading-secondary">Mesaj Gönderin</h2>
+                    <form action="#" method="POST" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Adınız Soyadınız</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-posta Adresiniz</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Konu</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mesajınız</label>
+                            <textarea id="message" name="message" rows="6" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Mesajı Gönder</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--map">
+            <h2 class="heading-secondary">Konumumuz</h2>
+            <div class="map-container">
+                <iframe src="https://maps.google.com/?cid=4668429643709021984&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>© 2025 Acusinema Kulübü. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+</body>
+</html>
