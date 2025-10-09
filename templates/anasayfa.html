@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acusinema | Pencereli Slider</title>
+    <title>Acusinema | Anasayfa</title>
     <link rel="stylesheet" href="/static/anasayfa.css">
 </head>
 <body>
@@ -16,10 +16,10 @@
         
         <nav class="main-nav">
             <ul class="nav-list">
-                <li class="nav-item"><a href="#" class="nav-link nav-link--active">Anasayfa</a></li>
+                <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link nav-link--active">Anasayfa</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Filmler</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Etkinlikler</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">İletişim</a></li>
+                <li class="nav-item"><a href="{% url 'iletisim' %}" class="nav-link">İletişim</a></li>
             </ul>
         </nav>
     </header>
@@ -60,7 +60,7 @@
                 
                 <article class="movie-card">
                     <figure class="movie-card__figure">
-                         <img src="/static/images/film1-afis.jpg" alt="Film Adı 1 Afişi" class="movie-card__image">
+                         <img src="/static/images/prestij.jpg" alt="Film Adı 1 Afişi" class="movie-card__image">
                          <figcaption class="movie-card__rating">8.5</figcaption>
                     </figure>
                     <div class="movie-card__content">
@@ -71,7 +71,7 @@
                 </article>
                 <article class="movie-card">
                     <figure class="movie-card__figure">
-                        <img src="/static/images/film2-afis.jpg" alt="Film Adı 2 Afişi" class="movie-card__image">
+                        <img src="/static/images/interstellar1.jpg" alt="Film Adı 2 Afişi" class="movie-card__image">
                         <figcaption class="movie-card__rating">9.1</figcaption>
                     </figure>
                     <div class="movie-card__content">
@@ -82,7 +82,7 @@
                 </article>
                 <article class="movie-card">
                     <figure class="movie-card__figure">
-                        <img src="/static/images/film3-afis.jpg" alt="Film Adı 3 Afişi" class="movie-card__image">
+                        <img src="/static/images/recepivedik.jpg" alt="Film Adı 3 Afişi" class="movie-card__image">
                         <figcaption class="movie-card__rating">7.8</figcaption>
                     </figure>
                     <div class="movie-card__content">
