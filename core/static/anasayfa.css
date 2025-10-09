@@ -60,13 +60,30 @@ body {
     padding: 10px 18px;
     display: block;
     border-radius: 4px;
-    transition: background-color 0.3s, color 0.3s;
+    transition: all 0.3s ease; /* transition'ı 'all' yaparak daha akıcı geçişler sağlarız */
+    position: relative; /* Alt çizgi için konumlandırma */
 }
-.nav-link:hover,
+.nav-link:hover {
+    color: var(--color-primary); /* Hover rengini turuncu yaptım */
+}
+
+/* AKTİF LİNK İÇİN YENİ STİL */
 .nav-link--active {
-    background-color: var(--color-primary);
-    color: #FFFFFF;
+    color: var(--color-primary); /* Aktif link metin rengi turuncu */
+    font-weight: 600; /* Biraz daha kalın */
 }
+
+.nav-link--active::after {
+    content: '';
+    position: absolute;
+    bottom: 5px; /* Alttan boşluk */
+    left: 18px; /* Soldan boşluk */
+    right: 18px; /* Sağdan boşluk */
+    height: 3px; /* Çizgi kalınlığı */
+    background-color: var(--color-primary); /* Çizgi rengi turuncu */
+    border-radius: 2px;
+}
+
 
 /* =============== SLIDER ALANI (PENCERELİ TASARIM) =============== */
 
@@ -101,7 +118,6 @@ body {
     backface-visibility: hidden; 
 }
 
-/* DÜZELTME BURADA YAPILDI */
 .slider-slide {
     width: calc(100% / 3); /* Toplam genişliği 3 slayta bölüyoruz */
     flex-shrink: 0; 
