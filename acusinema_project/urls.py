@@ -2,14 +2,13 @@
 
 from django.contrib import admin
 from django.urls import path
-# 'anasayfa'ya ek olarak 'iletisim_sayfasi' view'ını da import ediyoruz
-from core.views import anasayfa, iletisim_sayfasi 
+# 'etkinlikler_sayfasi' view'ını da import ediyoruz
+from core.views import anasayfa, iletisim_sayfasi, filmler_sayfasi, etkinlikler_sayfasi
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', anasayfa, name='anasayfa'), # <-- Kök dizini anasayfaya bağla
-    
-    # YENİ EKLENEN PATH
-    # /iletisim/ URL'sini iletisim_sayfasi view'ına bağlıyoruz
+    path('', anasayfa, name='anasayfa'),
     path('iletisim/', iletisim_sayfasi, name='iletisim'),
+    path('filmler/', filmler_sayfasi, name='filmler'),
+    path('etkinlikler/', etkinlikler_sayfasi, name='etkinlikler'),
 ]
