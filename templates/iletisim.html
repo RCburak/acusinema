@@ -4,25 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acusinema | İletişim</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/anasayfa.css">
     <link rel="stylesheet" href="/static/iletisim.css">
 </head>
 <body>
 
     <header class="site-header">
-        <div class="header-brand">
-            <img src="/static/images/aculogo.jpg" alt="Acusinema Logo" class="brand-logo">
-            <span class="brand-title">ACUSİNEMA</span>
+        <div class="header-main">
+            <a href="{% url 'anasayfa' %}" class="brand-link">
+                <div class="header-brand">
+                    <img src="/static/images/aculogo.jpg" alt="Acusinema Logo" class="brand-logo">
+                    <span class="brand-title">ACUSİNEMA</span>
+                </div>
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link">Anasayfa</a></li>
+                    <li class="nav-item"><a href="{% url 'filmler' %}" class="nav-link">Filmler</a></li>
+                    <li class="nav-item"><a href="{% url 'etkinlikler' %}" class="nav-link">Etkinlikler</a></li>
+                    <li class="nav-item"><a href="{% url 'iletisim' %}" class="nav-link nav-link--active">İletişim</a></li>
+                </ul>
+            </nav>
         </div>
-        
-        <nav class="main-nav">
-            <ul class="nav-list">
-                <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link">Anasayfa</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Filmler</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Etkinlikler</a></li>
-                <li class="nav-item"><a href="{% url 'iletisim' %}" class="nav-link nav-link--active">İletişim</a></li>
-            </ul>
-        </nav>
+        <div class="header-auth">
+            {% if user.is_authenticated %}
+                <span class="user-greeting">Hoş geldin, {{ user.username }}</span>
+                <a href="#" class="auth-link logout-btn"> <i class="icon-logout"></i> Çıkış Yap
+                </a>
+            {% else %}
+                <a href="#" class="auth-link login-btn"> <i class="icon-login"></i> Giriş Yap
+                </a>
+            {% endif %}
+        </div>
     </header>
 
     <main class="main-content-wrapper">
@@ -91,7 +108,7 @@
         <section class="section section--map">
             <h2 class="heading-secondary">Konumumuz</h2>
             <div class="map-container">
-                <iframe src="https://maps.google.com/?cid=4668429643709021984&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="http://googleusercontent.com/maps.google.com/4" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </section>
     </main>

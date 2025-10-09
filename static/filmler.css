@@ -1,0 +1,82 @@
+/* FİLMLER SAYFASI ÖZEL STİLLERİ */
+
+.filter-bar {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    flex-wrap: wrap; /* Küçük ekranlarda alt satıra geçsin */
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group label {
+    color: var(--color-text-subtle);
+    font-weight: 500;
+}
+
+.filter-select {
+    background-color: var(--color-bg-card);
+    color: var(--color-text-light);
+    border: 1px solid #333;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    font-family: inherit; /* YENİ: Fontu body'den alması için */
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+}
+
+.movie-card__button {
+    width: 100%; /* Kart butonlarının tam genişlikte olmasını sağlar */
+}
+
+/* Sayfalama Stilleri */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 50px;
+    padding-bottom: 30px;
+}
+
+.page-link {
+    color: var(--color-text-subtle);
+    text-decoration: none;
+    padding: 10px 18px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.page-link:hover {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: #fff;
+}
+
+.page-link.active {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+    cursor: default;
+}
+
+.page-link.disabled {
+    color: #444;
+    pointer-events: none;
+    border-color: #222;
+}
