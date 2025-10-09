@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acusinema | Filmler</title>
+    <link rel="stylesheet" href="/static/anasayfa.css">
+    <link rel="stylesheet" href="/static/iletisim.css"> <link rel="stylesheet" href="/static/filmler.css"> </head>
+<body>
+
+    <header class="site-header">
+        <div class="header-brand">
+            <img src="/static/images/aculogo.jpg" alt="Acusinema Logo" class="brand-logo">
+            <span class="brand-title">ACUSİNEMA</span>
+        </div>
+        
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link">Anasayfa</a></li>
+                <li class="nav-item"><a href="{% url 'filmler' %}" class="nav-link nav-link--active">Filmler</a></li>
+                <li class="nav-item"><a href="{% url 'etkinlikler' %}" class="nav-link">Etkinlikler</a></li>
+                <li class="nav-item"><a href="{% url 'iletisim' %}" class="nav-link">İletişim</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content-wrapper">
+        <section class="section section--welcome">
+            <h1 class="heading-primary">Film Arşivimiz</h1>
+            <p class="text-lead">
+                Kulübümüzde gösterilen veya tartışılan tüm filmlere buradan ulaşabilirsiniz.
+            </p>
+        </section>
+        
+        <section class="filter-bar">
+            <div class="filter-group">
+                <label for="genre-filter">Türe Göre Filtrele:</label>
+                <select id="genre-filter" class="filter-select">
+                    <option value="all">Tüm Türler</option>
+                    <option value="drama">Dram</option>
+                    <option value="sci-fi">Bilim Kurgu</option>
+                    <option value="comedy">Komedi</option>
+                    <option value="thriller">Gerilim</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="sort-by">Sırala:</label>
+                <select id="sort-by" class="filter-select">
+                    <option value="popularity">Popülerliğe Göre</option>
+                    <option value="rating">Puana Göre</option>
+                    <option value="newest">Yeniden Eskiye</option>
+                </select>
+            </div>
+        </section>
+
+        <hr class="divider">
+        
+        <section class="section">
+            <div class="movie-grid">
+                <article class="movie-card">
+                    <figure class="movie-card__figure">
+                         <img src="/static/images/prestij.jpg" alt="Prestij Afişi" class="movie-card__image">
+                         <figcaption class="movie-card__rating">8.5</figcaption>
+                    </figure>
+                    <div class="movie-card__content">
+                        <h3 class="movie-card__title">Prestij</h3>
+                        <p class="movie-card__meta">Gerilim, Dram | 130 dk</p>
+                        <button class="movie-card__button">Detayları Gör</button>
+                    </div>
+                </article>
+                <article class="movie-card">
+                    <figure class="movie-card__figure">
+                        <img src="/static/images/interstellar1.jpg" alt="Yıldızlararası Afişi" class="movie-card__image">
+                        <figcaption class="movie-card__rating">8.7</figcaption>
+                    </figure>
+                    <div class="movie-card__content">
+                        <h3 class="movie-card__title">Yıldızlararası</h3>
+                        <p class="movie-card__meta">Bilim Kurgu, Macera | 169 dk</p>
+                        <button class="movie-card__button">Detayları Gör</button>
+                    </div>
+                </article>
+                <article class="movie-card">
+                    <figure class="movie-card__figure">
+                        <img src="/static/images/recepivedik.jpg" alt="Recep İvedik Afişi" class="movie-card__image">
+                        <figcaption class="movie-card__rating">4.5</figcaption>
+                    </figure>
+                    <div class="movie-card__content">
+                        <h3 class="movie-card__title">Recep İvedik</h3>
+                        <p class="movie-card__meta">Komedi | 90 dk</p>
+                        <button class="movie-card__button">Detayları Gör</button>
+                    </div>
+                </article>
+                <article class="movie-card">
+                    <figure class="movie-card__figure">
+                         <img src="/static/images/film-placeholder-1.jpg" alt="Film 4 Afişi" class="movie-card__image">
+                         <figcaption class="movie-card__rating">7.9</figcaption>
+                    </figure>
+                    <div class="movie-card__content">
+                        <h3 class="movie-card__title">Film Adı 4</h3>
+                        <p class="movie-card__meta">Aksiyon | 120 dk</p>
+                        <button class="movie-card__button">Detayları Gör</button>
+                    </div>
+                </article>
+                 <article class="movie-card">
+                    <figure class="movie-card__figure">
+                         <img src="/static/images/film-placeholder-2.jpg" alt="Film 5 Afişi" class="movie-card__image">
+                         <figcaption class="movie-card__rating">8.1</figcaption>
+                    </figure>
+                    <div class="movie-card__content">
+                        <h3 class="movie-card__title">Film Adı 5</h3>
+                        <p class="movie-card__meta">Fantastik | 145 dk</p>
+                        <button class="movie-card__button">Detayları Gör</button>
+                    </div>
+                </article>
+                 <article class="movie-card">
+                    <figure class="movie-card__figure">
+                         <img src="/static/images/film-placeholder-3.jpg" alt="Film 6 Afişi" class="movie-card__image">
+                         <figcaption class="movie-card__rating">6.8</figcaption>
+                    </figure>
+                    <div class="movie-card__content">
+                        <h3 class="movie-card__title">Film Adı 6</h3>
+                        <p class="movie-card__meta">Korku | 95 dk</p>
+                        <button class="movie-card__button">Detayları Gör</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+        
+        <nav class="pagination">
+            <a href="#" class="page-link disabled">&laquo; Önceki</a>
+            <a href="#" class="page-link active">1</a>
+            <a href="#" class="page-link">2</a>
+            <a href="#" class="page-link">3</a>
+            <a href="#" class="page-link">Sonraki &raquo;</a>
+        </nav>
+        
+    </main>
+
+    <footer class="site-footer">
+        <p>© 2025 Acusinema Kulübü. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+</body>
+</html>
