@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acusinema | Pencereli Slider</title>
+    <title>Acusinema | Anasayfa</title>
     <link rel="stylesheet" href="/static/anasayfa.css">
 </head>
 <body>
@@ -16,10 +16,10 @@
         
         <nav class="main-nav">
             <ul class="nav-list">
-                <li class="nav-item"><a href="#" class="nav-link nav-link--active">Anasayfa</a></li>
+                <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link nav-link--active">Anasayfa</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Filmler</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Etkinlikler</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">İletişim</a></li>
+                <li class="nav-item"><a href="{% url 'iletisim' %}" class="nav-link">İletişim</a></li>
             </ul>
         </nav>
     </header>
