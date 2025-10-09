@@ -1,19 +1,17 @@
 /* İLETİŞİM SAYFASI ÖZEL STİLLERİ */
 
-/* İki sütunlu ana yapı */
 .contact-grid {
     display: grid;
-    grid-template-columns: 1fr 1.5fr; /* Sol sütun daha dar, sağ sütun daha geniş */
+    grid-template-columns: 1fr 1.5fr;
     gap: 50px;
     align-items: flex-start;
 }
 
-/* İletişim Bilgileri Listesi */
 .contact-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    word-break: break-all; /* Uzun e-posta adreslerinin satır sonuna sığmasını sağlar */
+    word-break: break-all;
 }
 .contact-list li {
     display: flex;
@@ -25,13 +23,12 @@
 .contact-list li svg {
     width: 28px;
     height: 28px;
-    fill: var(--color-primary); /* İkon rengi ana turuncu */
+    fill: var(--color-primary);
     margin-right: 20px;
     flex-shrink: 0;
 }
-/* YENİ EKLENEN KISIM: E-posta linklerinin rengini ayarlar */
 .contact-list li a {
-    color: inherit; /* Rengi parent element olan li'den alır */
+    color: inherit;
     text-decoration: none;
 }
 .contact-list li a:hover {
@@ -39,31 +36,27 @@
     color: var(--color-primary);
 }
 
-
-/* Sosyal Medya Linkleri - YENİ STİL */
 .social-links {
     margin-top: 15px;
 }
 .social-links a {
-    display: inline-flex; /* İkon ve metni yan yana getirmek için */
-    align-items: center;  /* Dikey olarak ortalamak için */
-    gap: 12px;            /* Aralarında boşluk bırakmak için */
-    text-decoration: none;/* Alt çizgiyi kaldırmak için */
-    color: var(--color-text-subtle); /* Metin rengi */
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--color-text-subtle);
     font-size: 1.1em;
     transition: all 0.3s ease;
 }
 .social-links a:hover {
-    color: var(--color-primary); /* Üzerine gelince metin turuncu olsun */
-    transform: scale(1.05); /* Hafifçe büyüsün */
+    color: var(--color-primary);
+    transform: scale(1.05);
 }
 .social-links a img {
     width: 32px;
     height: 32px;
 }
 
-
-/* İletişim Formu */
 .contact-form {
     display: flex;
     flex-direction: column;
@@ -91,12 +84,11 @@
 }
 .contact-form input:focus,
 .contact-form textarea:focus {
-    border-color: var(--color-secondary); /* Form elemanına tıklandığında mavi vurgu */
+    border-color: var(--color-secondary);
     outline: none;
     box-shadow: 0 0 10px rgba(0, 188, 212, 0.3);
 }
 
-/* Genel Buton Stili (Ana CSS'te de kullanılabilir) */
 .btn {
     background-color: var(--color-secondary);
     color: #FFFFFF;
@@ -115,7 +107,6 @@
     transform: translateY(-2px);
 }
 
-/* Harita Bölümü */
 .map-container {
     border-radius: 12px;
     overflow: hidden;
@@ -128,10 +119,9 @@
     height: 450px;
 }
 
-/* Duyarlı Tasarım (Tablet ve Telefon için) */
 @media (max-width: 900px) {
     .contact-grid {
-        grid-template-columns: 1fr; /* Sütunları alt alta dizer */
-        gap: 60px; /* Aradaki boşluğu artırır */
+        grid-template-columns: 1fr;
+        gap: 60px;
     }
 }
