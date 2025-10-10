@@ -1,5 +1,6 @@
-/* FİLMLER SAYFASI ÖZEL STİLLERİ */
+/* static/filmler.css */
 
+/* FİLMLER SAYFASI ÖZEL STİLLERİ */
 .filter-bar {
     display: flex;
     justify-content: center;
@@ -8,20 +9,17 @@
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    flex-wrap: wrap; /* Küçük ekranlarda alt satıra geçsin */
+    flex-wrap: wrap;
 }
-
 .filter-group {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-
 .filter-group label {
     color: var(--color-text-subtle);
     font-weight: 500;
 }
-
 .filter-select {
     background-color: var(--color-bg-card);
     color: var(--color-text-light);
@@ -31,19 +29,83 @@
     font-size: 1em;
     cursor: pointer;
     transition: border-color 0.3s;
-    font-family: inherit; /* YENİ: Fontu body'den alması için */
+    font-family: inherit;
 }
-
 .filter-select:focus {
     outline: none;
     border-color: var(--color-secondary);
 }
-
 .movie-card__button {
-    width: 100%; /* Kart butonlarının tam genişlikte olmasını sağlar */
+    width: 100%;
+    /* Not: Butonun genel stilleri (padding, border vb.) ana CSS dosyanızdan geliyor olabilir. */
 }
 
-/* Sayfalama Stilleri */
+/* ========================================================= */
+/* YENİ EKLENEN ARAMA FORMU VE TURUNCU BUTON STİLLERİ */
+/* ========================================================= */
+.search-form {
+    display: flex;
+    width: 100%;
+    max-width: 600px; /* Arama çubuğunun çok genişlemesini önler */
+    gap: 10px;
+}
+
+.search-form input.filter-select {
+    flex-grow: 1; /* Arama kutusunun esneyip boş alanı doldurması için */
+    width: auto;
+}
+
+.search-form button.movie-card__button {
+    width: auto; /* Genişliği içeriğine göre ayarlar */
+    padding-left: 25px; /* Butona yatay boşluk verir */
+    padding-right: 25px;
+    background-color: #ff6600; /* Sitenizin ana turuncu rengi */
+    border: none;
+    color: #ffffff; /* Yazı rengini beyaz yapar */
+    font-weight: 600; /* Yazıyı kalınlaştırır */
+    flex-shrink: 0; /* Butonun daralmasını engeller */
+    transition: background-color 0.3s ease;
+}
+
+.search-form button.movie-card__button:hover {
+    background-color: #e65c00; /* Üzerine gelince biraz daha koyu turuncu */
+}
+
+
+/* FİLM KARTI GRID (IZGARA) YAPISI */
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+/* FİLM KARTI RESİM BOYUTLANDIRMA */
+.movie-card__figure {
+    height: 450px;
+    overflow: hidden;
+    position: relative;
+    background-color: #111;
+}
+.movie-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
+
+/* MOBİL CİHAZLAR İÇİN UYUMLULUK */
+@media (max-width: 992px) {
+    .movie-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 768px) {
+    .movie-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* SAYFALAMA STİLLERİ */
 .pagination {
     display: flex;
     justify-content: center;
@@ -52,7 +114,6 @@
     margin-top: 50px;
     padding-bottom: 30px;
 }
-
 .page-link {
     color: var(--color-text-subtle);
     text-decoration: none;
@@ -61,20 +122,17 @@
     border-radius: 6px;
     transition: all 0.3s ease;
 }
-
 .page-link:hover {
     background-color: var(--color-secondary);
     border-color: var(--color-secondary);
     color: #fff;
 }
-
 .page-link.active {
     background-color: var(--color-primary);
     border-color: var(--color-primary);
     color: #fff;
     cursor: default;
 }
-
 .page-link.disabled {
     color: #444;
     pointer-events: none;
