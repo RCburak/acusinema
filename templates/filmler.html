@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -7,9 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/anasayfa.css">
-    <link rel="stylesheet" href="/static/iletisim.css">
-    <link rel="stylesheet" href="/static/filmler.css">
+    <link rel="stylesheet" href="{% static 'anasayfa.css' %}">
+    <link rel="stylesheet" href="{% static 'iletisim.css' %}">
+    <link rel="stylesheet" href="{% static 'filmler.css' %}">
 </head>
 <body>
 
@@ -17,11 +18,10 @@
         <div class="header-main">
             <a href="{% url 'anasayfa' %}" class="brand-link">
                 <div class="header-brand">
-                    <img src="/static/images/aculogo.jpg" alt="Acusinema Logo" class="brand-logo">
+                    <img src="{% static 'images/aculogo.jpg' %}" alt="Acusinema Logo" class="brand-logo">
                     <span class="brand-title">ACUSİNEMA</span>
                 </div>
             </a>
-            
             <nav class="main-nav">
                 <ul class="nav-list">
                     <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link">Anasayfa</a></li>
@@ -34,11 +34,9 @@
         <div class="header-auth">
             {% if user.is_authenticated %}
                 <span class="user-greeting">Hoş geldin, {{ user.username }}</span>
-                <a href="#" class="auth-link logout-btn"> <i class="icon-logout"></i> Çıkış Yap
-                </a>
+                <a href="#" class="auth-link logout-btn"> <i class="icon-logout"></i> Çıkış Yap</a>
             {% else %}
-                <a href="#" class="auth-link login-btn"> <i class="icon-login"></i> Giriş Yap
-                </a>
+                <a href="#" class="auth-link login-btn"> <i class="icon-login"></i> Giriş Yap</a>
             {% endif %}
         </div>
     </header>
@@ -52,111 +50,74 @@
         </section>
         
         <section class="filter-bar">
-            <div class="filter-group">
-                <label for="genre-filter">Türe Göre Filtrele:</label>
-                <select id="genre-filter" class="filter-select">
-                    <option value="all">Tüm Türler</option>
-                    <option value="drama">Dram</option>
-                    <option value="sci-fi">Bilim Kurgu</option>
-                    <option value="comedy">Komedi</option>
-                    <option value="thriller">Gerilim</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="sort-by">Sırala:</label>
-                <select id="sort-by" class="filter-select">
-                    <option value="popularity">Popülerliğe Göre</option>
-                    <option value="rating">Puana Göre</option>
-                    <option value="newest">Yeniden Eskiye</option>
-                </select>
-            </div>
+            <form method="GET" action="{% url 'filmler' %}" class="search-form" style="display: flex; gap: 10px;">
+                <input type="text" name="q" placeholder="Film adı ara..." value="{{ search_query|default:'' }}" class="filter-select" style="flex-grow: 1;">
+                <button type="submit" class="movie-card__button">Ara</button>
+            </form>
         </section>
 
         <hr class="divider">
         
         <section class="section">
+            {% if search_query %}
+                <h2 class="heading-secondary" style="margin-bottom: 20px;">"{{ search_query }}" için arama sonuçları:</h2>
+            {% endif %}
+
             <div class="movie-grid">
-                <article class="movie-card">
-                    <figure class="movie-card__figure">
-                         <img src="/static/images/prestij.jpg" alt="Prestij Afişi" class="movie-card__image">
-                         <figcaption class="movie-card__rating">8.5</figcaption>
-                    </figure>
-                    <div class="movie-card__content">
-                        <h3 class="movie-card__title">Prestij</h3>
-                        <p class="movie-card__meta">Gerilim, Dram | 130 dk</p>
-                        <button class="movie-card__button">Detayları Gör</button>
-                    </div>
-                </article>
-                <article class="movie-card">
-                    <figure class="movie-card__figure">
-                        <img src="/static/images/interstellar1.jpg" alt="Yıldızlararası Afişi" class="movie-card__image">
-                        <figcaption class="movie-card__rating">8.7</figcaption>
-                    </figure>
-                    <div class="movie-card__content">
-                        <h3 class="movie-card__title">Yıldızlararası</h3>
-                        <p class="movie-card__meta">Bilim Kurgu, Macera | 169 dk</p>
-                        <button class="movie-card__button">Detayları Gör</button>
-                    </div>
-                </article>
-                <article class="movie-card">
-                    <figure class="movie-card__figure">
-                        <img src="/static/images/recepivedik.jpg" alt="Recep İvedik Afişi" class="movie-card__image">
-                        <figcaption class="movie-card__rating">4.5</figcaption>
-                    </figure>
-                    <div class="movie-card__content">
-                        <h3 class="movie-card__title">Recep İvedik</h3>
-                        <p class="movie-card__meta">Komedi | 90 dk</p>
-                        <button class="movie-card__button">Detayları Gör</button>
-                    </div>
-                </article>
-                 <article class="movie-card">
-                    <figure class="movie-card__figure">
-                         <img src="/static/images/film-placeholder-1.jpg" alt="Film 4 Afişi" class="movie-card__image">
-                         <figcaption class="movie-card__rating">7.9</figcaption>
-                    </figure>
-                    <div class="movie-card__content">
-                        <h3 class="movie-card__title">Film Adı 4</h3>
-                        <p class="movie-card__meta">Aksiyon | 120 dk</p>
-                        <button class="movie-card__button">Detayları Gör</button>
-                    </div>
-                </article>
-                 <article class="movie-card">
-                    <figure class="movie-card__figure">
-                         <img src="/static/images/film-placeholder-2.jpg" alt="Film 5 Afişi" class="movie-card__image">
-                         <figcaption class="movie-card__rating">8.1</figcaption>
-                    </figure>
-                    <div class="movie-card__content">
-                        <h3 class="movie-card__title">Film Adı 5</h3>
-                        <p class="movie-card__meta">Fantastik | 145 dk</p>
-                        <button class="movie-card__button">Detayları Gör</button>
-                    </div>
-                </article>
-                 <article class="movie-card">
-                    <figure class="movie-card__figure">
-                         <img src="/static/images/film-placeholder-3.jpg" alt="Film 6 Afişi" class="movie-card__image">
-                         <figcaption class="movie-card__rating">6.8</figcaption>
-                    </figure>
-                    <div class="movie-card__content">
-                        <h3 class="movie-card__title">Film Adı 6</h3>
-                        <p class="movie-card__meta">Korku | 95 dk</p>
-                        <button class="movie-card__button">Detayları Gör</button>
-                    </div>
-                </article>
+                
+                {% if movies %}
+                    {% for movie in movies %}
+                    <article class="movie-card">
+                        <figure class="movie-card__figure">
+                            {% if movie.poster %}
+                                <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Afişi" class="movie-card__image">
+                            {% else %}
+                                <img src="{% static 'images/film-placeholder-1.jpg' %}" alt="Afiş Yok" class="movie-card__image">
+                            {% endif %}
+                            <figcaption class="movie-card__rating">{{ movie.rating }}</figcaption>
+                        </figure>
+                        <div class="movie-card__content">
+                            <h3 class="movie-card__title">{{ movie.title }}</h3>
+                            <p class="movie-card__meta">{{ movie.get_genre_display }} | {{ movie.duration }} dk</p>
+                            <button class="movie-card__button">Detayları Gör</button>
+                        </div>
+                    </article>
+                    {% endfor %}
+                {% else %}
+                    <p>Aradığınız kritere uygun film bulunamadı.</p>
+                {% endif %}
+
             </div>
         </section>
         
+        {% if movies.has_other_pages %}
         <nav class="pagination">
-            <a href="#" class="page-link disabled">&laquo; Önceki</a>
-            <a href="#" class="page-link active">1</a>
-            <a href="#" class="page-link">2</a>
-            <a href="#" class="page-link">3</a>
-            <a href="#" class="page-link">Sonraki &raquo;</a>
+            {% if movies.has_previous %}
+                <a href="?page={{ movies.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">&laquo; Önceki</a>
+            {% else %}
+                <a href="#" class="page-link disabled">&laquo; Önceki</a>
+            {% endif %}
+
+            {% for num in movies.paginator.page_range %}
+                {% if movies.number == num %}
+                    <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link active">{{ num }}</a>
+                {% else %}
+                    <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if movies.has_next %}
+                <a href="?page={{ movies.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">Sonraki &raquo;</a>
+            {% else %}
+                <a href="#" class="page-link disabled">Sonraki &raquo;</a>
+            {% endif %}
         </nav>
+        {% endif %}
         
     </main>
 
     <footer class="site-footer">
-        <p>© 2025 Acusinema Kulübü. Tüm Hakları Saklıdır.</p>
+        <p>© {% now "Y" %} Acusinema Kulübü. Tüm Hakları Saklıdır.</p>
     </footer>
 
 </body>

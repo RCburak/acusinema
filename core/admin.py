@@ -2,33 +2,32 @@
 
 from django.contrib import admin
 from .models import Acusinema, Event
+from django.utils.html import format_html
 
-# ... (AcusinemaAdmin sınıfınız burada aynı kalıyor) ...
 class AcusinemaAdmin(admin.ModelAdmin):
-    list_display = ('title', 'director', 'release_date')
-    search_fields = ('title', 'director')
-    list_filter = ('release_date', 'director')
-    date_hierarchy = 'release_date'
-
-
-# --- GÜNCELLENEN EVENT ADMIN SINIFI ---
-class EventAdmin(admin.ModelAdmin):
-    # Liste sayfasında slug'ı da gösterelim
-    list_display = ('title', 'location', 'event_date', 'slug')
-    list_filter = ('event_date', 'location')
-    search_fields = ('title', 'location')
-
-    # Ekleme/Düzenleme sayfasındaki alanları grupluyoruz
+    list_display = ('title', 'genre', 'rating', 'duration', 'display_poster')
+    list_filter = ('genre',)
+    search_fields = ('title',)
+    
     fieldsets = (
-        ('Etkinlik Detayları', {
-            'fields': ('title', 'slug', 'description')
+        ('Temel Bilgiler', {
+            'fields': ('title', 'poster')
         }),
-        ('Zaman ve Mekan', {
-            'fields': ('event_date', 'location')
+        ('Detaylar', {
+            'fields': ('genre', 'duration', 'rating')
         }),
     )
 
-    # 'slug' alanını 'title' alanından otomatik olarak doldur
+    def display_poster(self, obj):
+        if obj.poster:
+            return format_html('<img src="{}" width="50" style="border-radius: 5px;" />', obj.poster.url)
+        return "Afiş Yok"
+    display_poster.short_description = 'Afiş'
+
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('title', 'location', 'event_date', 'slug')
+    list_filter = ('event_date', 'location')
+    search_fields = ('title', 'location')
     prepopulated_fields = {'slug': ('title',)}
 
 admin.site.register(Acusinema, AcusinemaAdmin)
