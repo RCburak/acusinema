@@ -2,7 +2,6 @@
 
 from django.contrib import admin
 from django.urls import path
-# 'etkinlikler_sayfasi' view'ını da import ediyoruz
 from core.views import anasayfa, iletisim_sayfasi, filmler_sayfasi, etkinlikler_sayfasi
 
 urlpatterns = [
