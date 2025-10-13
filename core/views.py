@@ -4,7 +4,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils import timezone
 from django.core.paginator import Paginator
-from django.contrib.auth.forms import UserCreationForm
+# Gerekli formları ve fonksiyonları import ediyoruz
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 # Modelleri ve formları tek bir yerden, temiz bir şekilde import ediyoruz
 from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage
@@ -39,10 +41,7 @@ def filmler_sayfasi(request):
 
 def etkinlikler_sayfasi(request):
     now = timezone.now()
-    
-    # HATA BURADAYDI: .order_by('date') YANLIŞTI, 'event_date' OLARAK DÜZELTİLDİ
     upcoming_events = Event.objects.filter(event_date__gte=now).order_by('event_date')
-    
     past_events = Event.objects.filter(event_date__lt=now).order_by('-event_date')
     context = {
         'upcoming_events': upcoming_events,
@@ -57,7 +56,7 @@ def iletisim_sayfasi(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Mesajınız başarıyla gönderildi. En kısa sürede size geri döneceğiz.')
+            messages.success(request, 'Mesajınız başarıyla gönderildi.')
             return redirect('iletisim')
     else:
         form = ContactForm()
@@ -68,15 +67,31 @@ def iletisim_sayfasi(request):
     }
     return render(request, 'iletisim.html', context)
 
-def kayit_ol(request):
+# --- YENİ HESAP (GİRİŞ/KAYIT) VIEW'İ ---
+def hesap_sayfasi(request):
+    login_form = AuthenticationForm()
+    register_form = UserCreationForm()
+
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Hesabınız oluşturuldu {username}! Giriş yapabilirsiniz.')
-            return redirect('login')
-    else:
-        form = UserCreationForm()
-    
-    return render(request, 'registration/kayit_ol.html', {'form': form})
+        if 'login_submit' in request.POST:
+            login_form = AuthenticationForm(request, data=request.POST)
+            if login_form.is_valid():
+                user = login_form.get_user()
+                login(request, user)
+                return redirect('anasayfa')
+        elif 'register_submit' in request.POST:
+            register_form = UserCreationForm(request.POST)
+            if register_form.is_valid():
+                register_form.save()
+                messages.success(request, 'Hesabınız başarıyla oluşturuldu! Şimdi giriş yapabilirsiniz.')
+                return redirect('hesap')
+
+    context = {
+        'login_form': login_form,
+        'register_form': register_form
+    }
+    return render(request, 'hesap.html', context)
+
+def cikis_yap(request):
+    logout(request)
+    return redirect('anasayfa')

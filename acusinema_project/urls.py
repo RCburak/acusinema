@@ -2,20 +2,25 @@
 
 from django.contrib import admin
 from django.urls import path
-from core.views import anasayfa, iletisim_sayfasi, filmler_sayfasi, etkinlikler_sayfasi
+from core import views as core_views
 
-# Gerekli importları ekliyoruz
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', anasayfa, name='anasayfa'),
-    path('iletisim/', iletisim_sayfasi, name='iletisim'),
-    path('filmler/', filmler_sayfasi, name='filmler'),
-    path('etkinlikler/', etkinlikler_sayfasi, name='etkinlikler'),
+
+    # Sayfa URL'leri
+    path('', core_views.anasayfa, name='anasayfa'),
+    path('filmler/', core_views.filmler_sayfasi, name='filmler'),
+    path('etkinlikler/', core_views.etkinlikler_sayfasi, name='etkinlikler'),
+    path('iletisim/', core_views.iletisim_sayfasi, name='iletisim'),
+    
+    # Kullanıcı İşlem URL'leri
+    path('hesap/', core_views.hesap_sayfasi, name='hesap'),
+    path('cikis/', core_views.cikis_yap, name='logout'),
 ]
 
-# Medya dosyalarını sunmak için bu satırları ekliyoruz
+# Medya dosyalarını sunmak için
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
