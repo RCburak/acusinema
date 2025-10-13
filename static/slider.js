@@ -1,65 +1,68 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // DOM elementlerini seç
     const track = document.querySelector('.slider-track-js');
-    const slides = document.querySelectorAll('.slide-js');
+    if (!track) return;
+
+    const slides = Array.from(track.children);
     const prevButton = document.querySelector('.prev-button');
     const nextButton = document.querySelector('.next-button');
 
-    const totalSlides = slides.length;
-    let currentSlideIndex = 0;
-    
-    // Geçiş süresi: 3000 milisaniye = 3 saniye
-    const transitionTime = 3000;
-    let autoSlideInterval;
-
-    // Slaytı kaydırma pozisyonuna ayarlar (DÜZELTİLMİŞ FONKSİYON)
-    function updateSlidePosition() {
-        // DOĞRU HESAPLAMA: Kaydırma miktarını toplam slayt sayısına bölüyoruz.
-        const offset = (currentSlideIndex / totalSlides) * -100;
-        track.style.transform = `translateX(${offset}%)`;
+    if (!prevButton || !nextButton || slides.length === 0) {
+        if (prevButton) prevButton.style.display = 'none';
+        if (nextButton) nextButton.style.display = 'none';
+        return;
     }
 
-    // Bir sonraki slayta geçer (Otomatik veya Buton ile)
+    const totalSlides = slides.length;
+    let currentSlideIndex = 0;
+    const transitionTime = 4000;
+    let autoSlideInterval;
+
+    // track'in genişliğini slayt sayısına göre ayarla (Örn: 3 slayt için %300)
+    track.style.width = `${totalSlides * 100}%`;
+
+    // Her bir slaytın, track içindeki genişliğini ayarla (Örn: 3 slayt varsa her biri %33.33)
+    slides.forEach(slide => {
+        slide.style.width = `${100 / totalSlides}%`;
+    });
+    
+    function updateSlidePosition() {
+        const offset = currentSlideIndex * (100 / totalSlides);
+        track.style.transform = `translateX(-${offset}%)`;
+    }
+
     function nextSlide() {
         currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
         updateSlidePosition();
     }
 
-    // Bir önceki slayta geçer (Buton ile)
     function prevSlide() {
         currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
         updateSlidePosition();
     }
     
-    // Otomatik kaydırmayı başlatır
     function startAutoSlide() {
-        // Önceki intervali temizle ki çakışma olmasın
         clearInterval(autoSlideInterval); 
         autoSlideInterval = setInterval(nextSlide, transitionTime);
     }
     
-    // Otomatik kaydırmayı durdurur
     function stopAutoSlide() {
         clearInterval(autoSlideInterval);
     }
 
-    // Butonlara event listener ekle
     nextButton.addEventListener('click', () => {
-        stopAutoSlide(); // Butona basılınca otomatik geçişi durdur
+        stopAutoSlide();
         nextSlide();
-        startAutoSlide(); // Tekrar başlat
+        startAutoSlide();
     });
 
     prevButton.addEventListener('click', () => {
-        stopAutoSlide(); // Butona basılınca otomatik geçişi durdur
+        stopAutoSlide();
         prevSlide();
-        startAutoSlide(); // Tekrar başlat
+        startAutoSlide();
     });
 
-    // Sayfa yüklendiğinde slaytı 0. pozisyonda sabitler.
     updateSlidePosition();
 
-    // Başlangıçta otomatik kaydırmayı başlat
     if (totalSlides > 1) {
         startAutoSlide();
     }
