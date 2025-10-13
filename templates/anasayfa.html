@@ -1,53 +1,11 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 {% load static %}
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acusinema | Anasayfa</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'anasayfa.css' %}">
-</head>
-<body>
 
-    <header class="site-header">
-        <div class="header-main">
-            <a href="{% url 'anasayfa' %}" class="brand-link">
-                <div class="header-brand">
-                    <img src="{% static 'images/aculogo.jpg' %}" alt="Acusinema Logo" class="brand-logo">
-                    <span class="brand-title">ACUSİNEMA</span>
-                </div>
-            </a>
-            
-            <nav class="main-nav">
-                <ul class="nav-list">
-                    <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link nav-link--active">Anasayfa</a></li>
-                    <li class="nav-item"><a href="{% url 'filmler' %}" class="nav-link">Filmler</a></li>
-                    <li class="nav-item"><a href="{% url 'etkinlikler' %}" class="nav-link">Etkinlikler</a></li>
-                    <li class="nav-item"><a href="{% url 'iletisim' %}" class="nav-link">İletişim</a></li>
-                </ul>
-            </nav>
-        </div>
+{% block title %}Anasayfa{% endblock %}
 
-        <div class="header-auth">
-            {% if user.is_authenticated %}
-                <span class="user-greeting">Hoş geldin, {{ user.username }}</span>
-                <a href="#" class="auth-link logout-btn">
-                    <i class="icon-logout"></i> Çıkış Yap
-                </a>
-            {% else %}
-                <a href="#" class="auth-link login-btn">
-                    <i class="icon-login"></i> Giriş Yap
-                </a>
-            {% endif %}
-        </div>
-    </header>
-
+{% block content %}
     <section class="hero-slider-wrapper">
         <div class="slider-container">
-            
             <div class="slider-track-js slider-track">
                 {% if slider_images %}
                     {% for slide in slider_images %}
@@ -61,7 +19,6 @@
                     </div>
                 {% endif %}
             </div>
-
             <button class="slider-control slider-control--prev prev-button">&#10094;</button>
             <button class="slider-control slider-control--next next-button">&#10095;</button>
         </div>
@@ -74,13 +31,10 @@
                 Acusinema Kulübü olarak, en yeni vizyon filmlerinden kült yapımlara kadar geniş bir seçkiyi size ulaştırıyoruz. Perdeyi aralayın ve büyülü dünyaya adım atın.
             </p>
         </section>
-        
         <hr class="divider">
-        
         <section class="section section--popular">
             <h2 class="heading-secondary">Vizyondaki Filmler</h2>
             <div class="movie-grid">
-                
                 {% if homepage_movies %}
                     {% for movie in homepage_movies %}
                     <article class="movie-card">
@@ -98,15 +52,11 @@
                 {% else %}
                     <p>Şu anda vizyonda film bulunmamaktadır.</p>
                 {% endif %}
-
             </div>
         </section>
     </main>
+{% endblock %}
 
-    <footer class="site-footer">
-        <p>&copy; {% now "Y" %} Acusinema Kulübü. Tüm Hakları Saklıdır.</p>
-    </footer>
-
+{% block extra_js %}
     <script src="{% static 'slider.js' %}"></script>
-</body>
-</html>
+{% endblock %}

@@ -131,3 +131,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# settings.py dosyasının en altına eklenecek
+
+LOGOUT_REDIRECT_URL = 'anasayfa' # Çıkış yaptıktan sonra 'anasayfa' isimli URL'e yönlendir.
+LOGIN_URL = 'hesap'
