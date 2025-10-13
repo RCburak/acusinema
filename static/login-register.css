@@ -1,0 +1,128 @@
+/* ======================================== */
+/* GİRİŞ VE KAYIT SAYFASI STİLLERİ */
+/* ======================================== */
+.account-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 40px 20px;
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 450px;
+    background-color: var(--color-bg-card);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    border: 1px solid #2a2a2a;
+}
+
+.form-tabs {
+    display: flex;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #333;
+}
+
+.tab-link {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    background: none;
+    border: none;
+    color: var(--color-text-subtle);
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    font-family: inherit;
+}
+
+.tab-link::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--color-primary);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.tab-link.active {
+    color: var(--color-primary);
+}
+
+.tab-link.active::after {
+    transform: scaleX(1);
+}
+
+.form-section {
+    display: none; /* Varsayılan olarak formları gizle */
+}
+
+.form-section.active {
+    display: block; /* Sadece aktif olanı göster */
+}
+
+.form-section form p {
+    margin-bottom: 20px;
+}
+
+.form-section form label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-text-subtle);
+    font-size: 0.9em;
+}
+
+.form-section form input {
+    width: 100%;
+    background-color: var(--color-bg-dark);
+    border: 1px solid #333;
+    color: var(--color-text-light);
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 1em;
+    font-family: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-section form input:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.3);
+}
+
+.form-submit-btn {
+    width: 100%;
+    background: linear-gradient(45deg, #FF7B4C, var(--color-primary));
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1em;
+    transition: all 0.3s ease-out;
+    margin-top: 10px;
+}
+
+.form-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 87, 34, 0.4);
+}
+
+.form-footer-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+}
+.form-footer-link a {
+    color: var(--color-secondary);
+    text-decoration: none;
+    font-weight: 600;
+}

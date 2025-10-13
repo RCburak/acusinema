@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acusinema | {% block title %}Anasayfa{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{% static 'anasayfa.css' %}">
+    <link rel="stylesheet" href="{% static 'iletisim.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-main">
+            <a href="{% url 'anasayfa' %}" class="brand-link">
+                <div class="header-brand">
+                    <img src="{% static 'images/aculogo.jpg' %}" alt="Acusinema Logo" class="brand-logo">
+                    <span class="brand-title">ACUSİNEMA</span>
+                </div>
+            </a>
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="{% url 'anasayfa' %}" class="nav-link {% if request.resolver_match.url_name == 'anasayfa' %}nav-link--active{% endif %}">Anasayfa</a></li>
+                    <li class="nav-item"><a href="{% url 'filmler' %}" class="nav-link {% if request.resolver_match.url_name == 'filmler' %}nav-link--active{% endif %}">Filmler</a></li>
+                    <li class="nav-item"><a href="{% url 'etkinlikler' %}" class="nav-link {% if request.resolver_match.url_name == 'etkinlikler' %}nav-link--active{% endif %}">Etkinlikler</a></li>
+                    <li class="nav-item"><a href="{% url 'iletisim' %}" class="nav-link {% if request.resolver_match.url_name == 'iletisim' %}nav-link--active{% endif %}">İletişim</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="header-auth">
+            {% if user.is_authenticated %}
+                <span class="user-greeting">Hoş geldin, {{ user.username }}</span>
+                <a href="{% url 'logout' %}" class="auth-link logout-btn">
+                    <i class="icon-logout"></i> Çıkış Yap
+                </a>
+            {% else %}
+                <a href="{% url 'hesap' %}" class="auth-link login-btn">
+                    <i class="icon-login"></i> Giriş Yap
+                </a>
+            {% endif %}
+        </div>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer class="site-footer">
+        <p>© {% now "Y" %} Acusinema Kulübü. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
