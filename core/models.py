@@ -1,9 +1,6 @@
-# core/models.py
-
 from django.db import models
 from django.utils.text import slugify
 
-# --- DOĞRU ACUSINEMA MODELİ ---
 class Acusinema(models.Model):
     title = models.CharField("Film Başlığı", max_length=200)
     genre = models.CharField("Tür", max_length=100)
@@ -20,7 +17,6 @@ class Acusinema(models.Model):
     def __str__(self):
         return self.title
 
-# --- DOĞRU EVENT MODELİ ---
 class Event(models.Model):
     LOCATION_CHOICES = [
         ('K_SALONU', 'Konferans Salonu'),
@@ -43,7 +39,6 @@ class Event(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
-# ... (SiteSettings ve ContactMessage modelleriniz de burada olmalı) ...
 class SiteSettings(models.Model):
     address = models.CharField("Adres", max_length=300, blank=True, null=True)
     email1 = models.EmailField("E-posta Adresi 1", blank=True, null=True)
