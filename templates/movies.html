@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Filmler{% endblock %}
+{% block title %}Movies{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'filmler.css' %}">
@@ -10,16 +10,16 @@
 {% block content %}
     <main class="main-content-wrapper">
         <section class="section section--welcome">
-            <h1 class="heading-primary">Film Arşivimiz</h1>
+            <h1 class="heading-primary">Our Movie Archive</h1>
             <p class="text-lead">
-                Kulübümüzde gösterilen veya tartışılan tüm filmlere buradan ulaşabilirsiniz.
+                You can access all the movies shown or discussed in our club here.
             </p>
         </section>
         
         <section class="filter-bar">
-            <form method="GET" action="{% url 'filmler' %}" class="search-form">
-                <input type="text" name="q" placeholder="Film adı ara..." value="{{ search_query|default:'' }}" class="filter-select">
-                <button type="submit" class="movie-card__button">Ara</button>
+            <form method="GET" action="{% url 'movies' %}" class="search-form">
+                <input type="text" name="q" placeholder="Search for a movie title..." value="{{ search_query|default:'' }}" class="filter-select">
+                <button type="submit" class="movie-card__button">Search</button>
             </form>
         </section>
 
@@ -27,7 +27,7 @@
         
         <section class="section">
             {% if search_query %}
-                <h2 class="heading-secondary" style="margin-bottom: 20px;">"{{ search_query }}" için arama sonuçları:</h2>
+                <h2 class="heading-secondary" style="margin-bottom: 20px;">Search results for "{{ search_query }}":</h2>
             {% endif %}
 
             <div class="movie-grid">
@@ -35,18 +35,18 @@
                     {% for movie in movies %}
                     <article class="movie-card">
                         <figure class="movie-card__figure">
-                            <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Afişi" class="movie-card__image">
+                            <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="movie-card__image">
                             <figcaption class="movie-card__rating">{{ movie.rating }}</figcaption>
                         </figure>
                         <div class="movie-card__content">
                             <h3 class="movie-card__title">{{ movie.title }}</h3>
-                            <p class="movie-card__meta">{{ movie.genre }} | {{ movie.duration }} dk</p>
-                            <button class="movie-card__button">Detayları Gör</button>
+                            <p class="movie-card__meta">{{ movie.genre }} | {{ movie.duration }} min</p>
+                            <button class="movie-card__button">View Details</button>
                         </div>
                     </article>
                     {% endfor %}
                 {% else %}
-                    <p>Aradığınız kritere uygun film bulunamadı.</p>
+                    <p>No movies found matching your criteria.</p>
                 {% endif %}
             </div>
         </section>
@@ -54,9 +54,9 @@
         {% if movies.has_other_pages %}
         <nav class="pagination">
             {% if movies.has_previous %}
-                <a href="?page={{ movies.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">&laquo; Önceki</a>
+                <a href="?page={{ movies.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">&laquo; Previous</a>
             {% else %}
-                <a href="#" class="page-link disabled">&laquo; Önceki</a>
+                <a href="#" class="page-link disabled">&laquo; Previous</a>
             {% endif %}
             {% for num in movies.paginator.page_range %}
                 {% if movies.number == num %}
@@ -66,9 +66,9 @@
                 {% endif %}
             {% endfor %}
             {% if movies.has_next %}
-                <a href="?page={{ movies.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">Sonraki &raquo;</a>
+                <a href="?page={{ movies.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">Next &raquo;</a>
             {% else %}
-                <a href="#" class="page-link disabled">Sonraki &raquo;</a>
+                <a href="#" class="page-link disabled">Next &raquo;</a>
             {% endif %}
         </nav>
         {% endif %}

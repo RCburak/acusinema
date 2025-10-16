@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Anasayfa{% endblock %}
+{% block title %}Homepage{% endblock %}
 
 {% block content %}
     <section class="hero-slider-wrapper">
@@ -15,7 +15,7 @@
                     {% endfor %}
                 {% else %}
                     <div class="slide-js slider-slide">
-                        <img src="{% static 'images/res1.png' %}" alt="Varsayılan Slider Görseli" class="slide-image">
+                        <img src="{% static 'images/res1.png' %}" alt="Default Slider Image" class="slide-image">
                     </div>
                 {% endif %}
             </div>
@@ -26,31 +26,31 @@
 
     <main class="main-content-wrapper">
         <section class="section section--welcome">
-            <h1 class="heading-primary">Sinema Tutkunlarının Buluşma Noktası</h1>
+            <h1 class="heading-primary">The Meeting Point for Cinema Lovers</h1>
             <p class="text-lead">
-                Acusinema Kulübü olarak, en yeni vizyon filmlerinden kült yapımlara kadar geniş bir seçkiyi size ulaştırıyoruz. Perdeyi aralayın ve büyülü dünyaya adım atın.
+                As the Acusinema Club, we bring you a wide selection from the latest releases to cult classics. Draw the curtain and step into the magical world.
             </p>
         </section>
         <hr class="divider">
         <section class="section section--popular">
-            <h2 class="heading-secondary">Vizyondaki Filmler</h2>
+            <h2 class="heading-secondary">Now Showing</h2>
             <div class="movie-grid">
                 {% if homepage_movies %}
                     {% for movie in homepage_movies %}
                     <article class="movie-card">
                         <figure class="movie-card__figure">
-                            <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Afişi" class="movie-card__image">
+                            <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="movie-card__image">
                             <figcaption class="movie-card__rating">{{ movie.rating }}</figcaption>
                         </figure>
                         <div class="movie-card__content">
                             <h3 class="movie-card__title">{{ movie.title }}</h3>
-                            <p class="movie-card__meta">{{ movie.genre }} | {{ movie.duration }} dk</p>
-                            <button class="movie-card__button">Rezervasyon Yap</button>
+                            <p class="movie-card__meta">{{ movie.genre }} | {{ movie.duration }} min</p>
+                            <button class="movie-card__button">Make a Reservation</button>
                         </div>
                     </article>
                     {% endfor %}
                 {% else %}
-                    <p>Şu anda vizyonda film bulunmamaktadır.</p>
+                    <p>There are currently no movies showing.</p>
                 {% endif %}
             </div>
         </section>

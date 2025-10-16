@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Etkinlikler{% endblock %}
+{% block title %}Events{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'etkinlikler.css' %}">
@@ -10,16 +10,16 @@
 {% block content %}
     <main class="main-content-wrapper">
         <section class="section section--welcome">
-            <h1 class="heading-primary">Kulüp Etkinliklerimiz</h1>
+            <h1 class="heading-primary">Our Club Events</h1>
             <p class="text-lead">
-                Film gösterimleri, yönetmen söyleşileri ve atölyeler gibi tüm etkinliklerimizi takip edin.
+                Follow all our events like film screenings, director talks, and workshops.
             </p>
         </section>
 
         <hr class="divider">
         
         <section class="section">
-            <h2 class="heading-secondary">Yaklaşan Etkinlikler</h2>
+            <h2 class="heading-secondary">Upcoming Events</h2>
             <div class="events-list">
                 {% if upcoming_events %}
                     {% for event in upcoming_events %}
@@ -32,17 +32,19 @@
                             <h3 class="event-title">{{ event.title }}</h3>
                             <div class="event-meta">
                                 <span><i class="icon-time"></i>{{ event.event_date|date:"H:i" }}</span>
+                                
                                 <span><i class="icon-location"></i>{{ event.get_location_display }}</span>
+
                             </div>
                             <p class="event-description">{{ event.description|linebreaks }}</p>
                         </div>
                         <div class="event-action">
-                            <a href="#" class="btn">Kayıt Ol</a>
+                            <a href="#" class="btn">Register</a>
                         </div>
                     </article>
                     {% endfor %}
                 {% else %}
-                    <p>Yaklaşan bir etkinlik bulunmamaktadır.</p>
+                    <p>There are no upcoming events.</p>
                 {% endif %}
             </div>
         </section>
@@ -50,7 +52,7 @@
         <hr class="divider">
 
         <section class="section">
-            <h2 class="heading-secondary">Geçmiş Etkinlikler</h2>
+            <h2 class="heading-secondary">Past Events</h2>
             <div class="events-list past-events">
                 {% if past_events %}
                     {% for event in past_events %}
@@ -63,17 +65,19 @@
                             <h3 class="event-title">{{ event.title }}</h3>
                             <div class="event-meta">
                                 <span><i class="icon-time"></i>{{ event.event_date|date:"H:i" }}</span>
+
                                 <span><i class="icon-location"></i>{{ event.get_location_display }}</span>
+
                             </div>
                             <p class="event-description">{{ event.description|linebreaks }}</p>
                         </div>
                         <div class="event-action">
-                            <a href="#" class="btn-secondary">Etkinlik Sona Erdi</a>
+                            <a href="#" class="btn-secondary">Event Ended</a>
                         </div>
                     </article>
                     {% endfor %}
                 {% else %}
-                    <p>Henüz tamamlanmış bir etkinlik bulunmamaktadır.</p>
+                    <p>There are no completed events yet.</p>
                 {% endif %}
             </div>
         </section>
