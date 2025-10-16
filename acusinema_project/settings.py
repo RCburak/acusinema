@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,5 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGOUT_REDIRECT_URL = 'anasayfa' # Çıkış yaptıktan sonra 'anasayfa' isimli URL'e yönlendir.
 LOGIN_URL = 'hesap'
+
+AUTH_USER_MODEL = 'users.CustomUser'
