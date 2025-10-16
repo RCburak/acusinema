@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Account{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'login-register.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="main-content-wrapper">
+    <div class="account-container">
+        <div class="form-wrapper">
+            <div class="form-tabs">
+                <button class="tab-link active" data-form="login">Login</button>
+                <button class="tab-link" data-form="register">Register</button>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success" style="padding: 15px; background-color: #28a745; color: white; border-radius: 6px; margin-bottom: 20px; text-align: center;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div id="login-form" class="form-section active">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ login_form.as_p }}
+                    <button type="submit" name="login_submit" class="form-submit-btn">Login</button>
+                </form>
+            </div>
+
+            <div id="register-form" class="form-section">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ register_form.as_p }}
+                    <button type="submit" name="register_submit" class="form-submit-btn">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const formSections = document.querySelectorAll('.form-section');
+        tabLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const formId = link.dataset.form + '-form';
+                tabLinks.forEach(item => item.classList.remove('active'));
+                formSections.forEach(section => section.classList.remove('active'));
+                link.classList.add('active');
+                document.getElementById(formId).classList.add('active');
+            });
+        });
+    });
+</script>
+{% endblock %}
