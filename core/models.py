@@ -20,15 +20,12 @@ class Acusinema(models.Model):
         return self.title
 
 class Event(models.Model):
-    LOCATION_CHOICES = [
-        ('CONFERENCE_HALL', 'Conference Hall'),
-        ('OPEN_AIR_CINEMA', 'Open-Air Cinema'),
-    ]
+   
     title = models.CharField("Event Title", max_length=200)
     slug = models.SlugField(max_length=250, unique=True, blank=True)
     description = models.TextField("Description")
     event_date = models.DateTimeField("Event Date and Time")
-    location = models.CharField("Location", max_length=20, choices=LOCATION_CHOICES, default='CONFERENCE_HALL')
+    location = models.CharField("Location", max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name = "Event"

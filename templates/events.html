@@ -9,39 +9,23 @@
 
 {% block content %}
     <main class="main-content-wrapper">
-        <section class="section section--welcome">
-            <h1 class="heading-primary">Our Club Events</h1>
-            <p class="text-lead">
-                Follow all our events like film screenings, director talks, and workshops.
-            </p>
-        </section>
-
-        <hr class="divider">
-        
         <section class="section">
             <h2 class="heading-secondary">Upcoming Events</h2>
             <div class="events-list">
                 {% if upcoming_events %}
                     {% for event in upcoming_events %}
                     <article class="event-card">
-                        <div class="event-date">
-                            <span class="day">{{ event.event_date|date:"d" }}</span>
-                            <span class="month">{{ event.event_date|date:"b"|upper }}</span>
-                        </div>
                         <div class="event-content">
                             <h3 class="event-title">{{ event.title }}</h3>
                             <div class="event-meta">
                                 <span><i class="icon-time"></i>{{ event.event_date|date:"H:i" }}</span>
                                 
-                                <span><i class="icon-location"></i>{{ event.get_location_display }}</span>
+                                <span><i class="icon-location"></i>{{ event.location }}</span>
 
                             </div>
                             <p class="event-description">{{ event.description|linebreaks }}</p>
                         </div>
-                        <div class="event-action">
-                            <a href="#" class="btn">Register</a>
-                        </div>
-                    </article>
+                        </article>
                     {% endfor %}
                 {% else %}
                     <p>There are no upcoming events.</p>
@@ -57,24 +41,17 @@
                 {% if past_events %}
                     {% for event in past_events %}
                     <article class="event-card">
-                        <div class="event-date">
-                            <span class="day">{{ event.event_date|date:"d" }}</span>
-                            <span class="month">{{ event.event_date|date:"b"|upper }}</span>
-                        </div>
-                        <div class="event-content">
+                       <div class="event-content">
                             <h3 class="event-title">{{ event.title }}</h3>
                             <div class="event-meta">
                                 <span><i class="icon-time"></i>{{ event.event_date|date:"H:i" }}</span>
 
-                                <span><i class="icon-location"></i>{{ event.get_location_display }}</span>
+                                <span><i class="icon-location"></i>{{ event.location }}</span>
 
                             </div>
                             <p class="event-description">{{ event.description|linebreaks }}</p>
                         </div>
-                        <div class="event-action">
-                            <a href="#" class="btn-secondary">Event Ended</a>
-                        </div>
-                    </article>
+                        </article>
                     {% endfor %}
                 {% else %}
                     <p>There are no completed events yet.</p>
