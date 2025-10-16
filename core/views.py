@@ -8,6 +8,9 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage
 from .forms import ContactForm
+from .forms import ContactForm, CustomUserCreationForm, CustomAuthenticationForm
+from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage
+
 
 def homepage(request):
     movies_on_homepage = Acusinema.objects.order_by('-created_at')[:3]
@@ -79,6 +82,34 @@ def account_page(request):
         'register_form': register_form
     }
     return render(request, 'account.html', context)
+
+def account_page(request):
+    # Formları kendi custom formlarınızla değiştirin
+    login_form = CustomAuthenticationForm()
+    register_form = CustomUserCreationForm()
+    
+    if request.method == 'POST':
+        if 'login_submit' in request.POST:
+            login_form = CustomAuthenticationForm(request, data=request.POST)
+            if login_form.is_valid():
+                user = login_form.get_user()
+                login(request, user)
+                return redirect('homepage')
+        elif 'register_submit' in request.POST:
+            register_form = CustomUserCreationForm(request.POST)
+            if register_form.is_valid():
+                user = register_form.save()
+                # Kayıt sonrası otomatik giriş yaptırmak isterseniz aşağıdaki satırı ekleyebilirsiniz
+                # login(request, user)
+                messages.success(request, 'Hesabınız başarıyla oluşturuldu! Şimdi giriş yapabilirsiniz.')
+                return redirect('account')
+    
+    context = {
+        'login_form': login_form,
+        'register_form': register_form
+    }
+    return render(request, 'account.html', context)
+
 
 def logout_view(request):
     logout(request)
