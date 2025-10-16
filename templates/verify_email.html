@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}E-posta Doğrulama{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'login-register.css' %}">
+    {# Hata ve başarı mesajları için stilleri doğrudan buraya ekliyoruz #}
+    <style>
+        .alert {
+            padding: 15px;
+            color: white;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .alert-success {
+            background-color: #28a745; /* Yeşil */
+        }
+        .alert-error {
+            background-color: #dc3545; /* Kırmızı */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<main class="main-content-wrapper">
+    <div class="account-container">
+        <div class="form-wrapper">
+            
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--color-text-light);">Hesabınızı Doğrulayın</h2>
+            
+            <p style="text-align: center; color: var(--color-text-subtle); margin-bottom: 30px;">
+                E-posta adresinize gönderilen doğrulama kodunu girerek hesabınızı aktive edin.
+            </p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    {# Mesajın etiketine göre (error/success) doğru CSS sınıfını atıyoruz #}
+                    <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" class="form-section active">
+                {% csrf_token %}
+                
+                {# Django'nun formunu 'as_p' ile paragraflar halinde yazdırıyoruz. #}
+                {{ form.as_p }}
+                
+                <button type="submit" class="form-submit-btn">Doğrula ve Giriş Yap</button>
+            </form>
+
+        </div>
+    </div>
+</main>
+{% endblock %}

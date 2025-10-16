@@ -135,7 +135,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # settings.py dosyasının en altına eklenecek
 
-LOGOUT_REDIRECT_URL = 'anasayfa' # Çıkış yaptıktan sonra 'anasayfa' isimli URL'e yönlendir.
-LOGIN_URL = 'hesap'
+LOGOUT_REDIRECT_URL = 'homepage' # Çıkış yaptıktan sonra 'anasayfa' isimli URL'e yönlendir.
+LOGIN_URL = 'account'
 
 AUTH_USER_MODEL = 'users.CustomUser'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -22,7 +22,16 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(label='E-posta Adresi', widget=forms.EmailInput(attrs={'autofocus': True}))
 
+
+class EmailVerificationForm(forms.Form):
+    code = forms.CharField(
+        label='Doğrulama Kodu',
+        max_length=100,
+        widget=forms.TextInput(attrs={'placeholder': 'E-postanıza gelen kodu girin'})
+    )
+
 class ContactForm(forms.ModelForm):
+    # ... bu form aynı kalabilir ...
     class Meta:
         model = ContactMessage
         fields = ['name', 'email', 'subject', 'message']
