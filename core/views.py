@@ -1,18 +1,15 @@
+# core/views.py
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
 from django.core.paginator import Paginator
-from django.contrib.auth import login, logout, get_user_model 
+from django.contrib.auth import login, logout
+from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage
+from .forms import ContactForm, CustomUserCreationForm, CustomAuthenticationForm
+from users.models import CustomUser 
 from django.core.mail import send_mail
 from django.urls import reverse
-
-# ... your other form/model imports
-from .forms import ContactForm, CustomUserCreationForm, CustomAuthenticationForm, EmailVerificationForm
-from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage
-
-# Formları import ettiğimiz satırı güncelleyelim
-from .forms import ContactForm, CustomUserCreationForm, CustomAuthenticationForm, EmailVerificationForm
-from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage
 
 def homepage(request):
     movies_on_homepage = Acusinema.objects.order_by('-created_at')[:3]
@@ -78,7 +75,7 @@ def account_page(request):
                     return redirect('homepage')
                 else:
                     messages.error(request, 'Hesabınız aktif değil veya e-posta adresiniz doğrulanmamış. Lütfen e-postanıza gelen doğrulama kodunu girin.')
-                    # Kullanıcıyı doğrulama sayfasına yönlendirebiliriz
+                    # Kullanıcıyı doğrulama sayfasına yönlendir
                     return redirect('verify-email', user_id=user.pk)
 
         elif 'register_submit' in request.POST:
@@ -88,6 +85,9 @@ def account_page(request):
                 # Kullanıcıyı kaydet ama henüz aktif etme
                 user.is_active = False 
                 user.save()
+
+                # Doğrulama kodu oluştur ve kaydet
+                user.generate_verification_code()
 
                 # Doğrulama e-postası gönder
                 verification_url = request.build_absolute_uri(
@@ -114,32 +114,20 @@ def account_page(request):
     }
     return render(request, 'account.html', context)
 
-
-# === YENİ EKLENEN VİEW ===
-def verify_email_view(request, user_id):
+def verify_email(request, user_id):
     user = get_object_or_404(CustomUser, pk=user_id)
-    if user.is_email_verified:
-        messages.info(request, 'Bu hesap zaten doğrulanmış. Lütfen giriş yapın.')
-        return redirect('account')
-
     if request.method == 'POST':
-        form = EmailVerificationForm(request.POST)
-        if form.is_valid():
-            entered_code = form.cleaned_data['code']
-            if entered_code == user.verification_code:
-                user.is_active = True
-                user.is_email_verified = True
-                user.save()
-                login(request, user)
-                messages.success(request, 'E-posta adresiniz başarıyla doğrulandı. Hoş geldiniz!')
-                return redirect('homepage')
-            else:
-                messages.error(request, 'Geçersiz doğrulama kodu. Lütfen tekrar deneyin.')
-    else:
-        form = EmailVerificationForm()
-
-    return render(request, 'verify_email.html', {'form': form})
-
+        code = request.POST.get('verification_code')
+        if code == user.verification_code:
+            user.is_active = True
+            user.is_email_verified = True
+            user.save()
+            login(request, user)
+            messages.success(request, 'E-posta adresiniz başarıyla doğrulandı. Hoş geldiniz!')
+            return redirect('homepage')
+        else:
+            messages.error(request, 'Geçersiz doğrulama kodu.')
+    return render(request, 'verify_email.html', {'user': user})
 
 def logout_view(request):
     logout(request)
