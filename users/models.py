@@ -8,11 +8,15 @@ import string
 
 class CustomUserManager(BaseUserManager):
     """
-    E-posta adresi ile kullanıcı oluşturan özel kullanıcı yöneticisi.
+    Custom user manager where email is the unique identifier
+    for authentication instead of usernames.
     """
     def create_user(self, email, password=None, **extra_fields):
+        """
+        Create and save a User with the given email and password.
+        """
         if not email:
-            raise ValueError('Kullanıcıların bir e-posta adresi olmalıdır')
+            raise ValueError('The Email must be set')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -20,51 +24,55 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
+        """
+        Create and save a SuperUser with the given email and password.
+        """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
-        extra_fields.setdefault('is_email_verified', True)
-
+        extra_fields.setdefault('is_email_verified', True) # Superusers should be verified by default
 
         if extra_fields.get('is_staff') is not True:
-            raise ValueError('Süper kullanıcının is_staff=True olması gerekir.')
+            raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Süper kullanıcının is_superuser=True olması gerekir.')
+            raise ValueError('Superuser must have is_superuser=True.')
 
         return self.create_user(email, password, **extra_fields)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     """
-    E-postayı kullanıcı adı olarak kullanan özel kullanıcı modeli.
+    Custom user model using email as the username field.
     """
-    email = models.EmailField('e-posta adresi', unique=True)
-    first_name = models.CharField('ad', max_length=150, blank=True)
-    last_name = models.CharField('soyad', max_length=150, blank=True)
+    # Changed verbose names to English
+    email = models.EmailField('email address', unique=True)
+    first_name = models.CharField('first name', max_length=150, blank=True)
+    last_name = models.CharField('last name', max_length=150, blank=True)
     is_staff = models.BooleanField(
-        'personel durumu',
+        'staff status',
         default=False,
-        help_text='Kullanıcının admin sitesine giriş yapıp yapamayacağını belirtir.',
+        help_text='Designates whether the user can log into this admin site.',
     )
     is_active = models.BooleanField(
-        'aktif',
-        default=False, # Yeni kullanıcılar doğrulanana kadar aktif olmasın
-        help_text='Bu kullanıcının aktif olarak kabul edilip edilmeyeceğini belirtir.',
+        'active',
+        default=False, # Users inactive until email is verified
+        help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.',
     )
-    date_joined = models.DateTimeField('katılım tarihi', default=timezone.now)
+    date_joined = models.DateTimeField('date joined', default=timezone.now)
 
-    # Yeni eklenen alanlar
-    is_email_verified = models.BooleanField('e-posta doğrulandı', default=False)
-    verification_code = models.CharField('doğrulama kodu', max_length=6, blank=True, null=True)
+    # Email verification fields (verbose names changed)
+    is_email_verified = models.BooleanField('email verified', default=False)
+    verification_code = models.CharField('verification code', max_length=6, blank=True, null=True)
 
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name'] # Email & Password are required by default.
 
     def __str__(self):
         return self.email
 
     def generate_verification_code(self):
+        """Generates and saves a 6-digit random verification code."""
         self.verification_code = ''.join(random.choices(string.digits, k=6))
         self.save()

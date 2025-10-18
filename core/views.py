@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth import login, logout
 from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage
 from .forms import ContactForm, CustomUserCreationForm, CustomAuthenticationForm
-from users.models import CustomUser 
+from users.models import CustomUser
 from django.core.mail import send_mail
 from django.urls import reverse
 
@@ -50,6 +50,7 @@ def contact_page(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
+            # Changed message to English
             messages.success(request, 'Your message has been sent successfully.')
             return redirect('contact')
     else:
@@ -60,60 +61,81 @@ def contact_page(request):
     }
     return render(request, 'contact.html', context)
 
+# Translate account_page messages and email content
 def account_page(request):
     login_form = CustomAuthenticationForm()
     register_form = CustomUserCreationForm()
-    
+    active_tab = 'login'
+
     if request.method == 'POST':
         if 'login_submit' in request.POST:
             login_form = CustomAuthenticationForm(request, data=request.POST)
             if login_form.is_valid():
                 user = login_form.get_user()
-                # Sadece e-postası doğrulanmış ve aktif kullanıcılar giriş yapabilsin
                 if user.is_active and user.is_email_verified:
                     login(request, user)
                     return redirect('homepage')
                 else:
-                    messages.error(request, 'Hesabınız aktif değil veya e-posta adresiniz doğrulanmamış. Lütfen e-postanıza gelen doğrulama kodunu girin.')
-                    # Kullanıcıyı doğrulama sayfasına yönlendir
+                    # Changed message to English
+                    messages.error(request, 'Your account is inactive or your email address is not verified. Please enter the verification code sent to your email.')
                     return redirect('verify-email', user_id=user.pk)
+            else:
+                active_tab = 'login'
 
         elif 'register_submit' in request.POST:
+            submitted_email = request.POST.get('email')
+            if submitted_email:
+                try:
+                    existing_unverified_user = CustomUser.objects.get(
+                        email=submitted_email,
+                        is_active=False,
+                        is_email_verified=False
+                    )
+                    existing_unverified_user.delete()
+                    print(f"Deleted old unverified record for: {submitted_email}") # Console message
+                except CustomUser.DoesNotExist:
+                    pass
+
             register_form = CustomUserCreationForm(request.POST)
+            active_tab = 'register'
+
             if register_form.is_valid():
                 user = register_form.save(commit=False)
-                # Kullanıcıyı kaydet ama henüz aktif etme
-                user.is_active = False 
+                user.is_active = False # Keep inactive until verified
                 user.save()
 
-                # Doğrulama kodu oluştur ve kaydet
                 user.generate_verification_code()
 
-                # Doğrulama e-postası gönder
                 verification_url = request.build_absolute_uri(
                     reverse('verify-email', kwargs={'user_id': user.pk})
                 )
-                
-                subject = 'Acusinema Hesap Doğrulama'
+
+                # Changed email subject and message to English
+                subject = 'Acusinema Account Verification'
                 message = (
-                    f'Merhaba {user.first_name},\n\n'
-                    f'Hesabınızı doğrulamak için lütfen aşağıdaki kodu kullanın:\n\n'
-                    f'Doğrulama Kodunuz: {user.verification_code}\n\n'
-                    f'Kodu girmek için bu linke tıklayabilirsiniz: {verification_url}\n\n'
-                    'Teşekkürler,\nAcusinema Ekibi'
+                    f'Hello {user.first_name},\n\n'
+                    f'Please use the following code to verify your account:\n\n'
+                    f'Your Verification Code: {user.verification_code}\n\n'
+                    f'You can click this link to enter the code: {verification_url}\n\n'
+                    'Thanks,\nThe Acusinema Team'
                 )
-                
+
                 send_mail(subject, message, 'noreply@acusinema.com', [user.email])
-                
-                messages.success(request, 'Hesabınız oluşturuldu! Lütfen e-posta adresinize gönderilen doğrulama kodunu girerek hesabınızı aktive edin.')
+
+                # Changed message to English
+                messages.success(request, 'Your account has been created! Please activate your account by entering the verification code sent to your email address.')
                 return redirect('verify-email', user_id=user.pk)
-    
+            # else: Form is invalid, errors will be shown
+
     context = {
         'login_form': login_form,
-        'register_form': register_form
+        'register_form': register_form,
+        'active_tab': active_tab
     }
     return render(request, 'account.html', context)
 
+
+# Translate verify_email messages
 def verify_email(request, user_id):
     user = get_object_or_404(CustomUser, pk=user_id)
     if request.method == 'POST':
@@ -121,14 +143,19 @@ def verify_email(request, user_id):
         if code == user.verification_code:
             user.is_active = True
             user.is_email_verified = True
+            user.verification_code = None # Clear the code after successful verification
             user.save()
             login(request, user)
-            messages.success(request, 'E-posta adresiniz başarıyla doğrulandı. Hoş geldiniz!')
+            # Changed messages to English
+            messages.success(request, 'Your email address has been successfully verified. Welcome!')
             return redirect('homepage')
         else:
-            messages.error(request, 'Geçersiz doğrulama kodu.')
+            messages.error(request, 'Invalid verification code.')
     return render(request, 'verify_email.html', {'user': user})
 
+# logout_view usually doesn't need translation, but double-check if you added messages
 def logout_view(request):
     logout(request)
+    # Optional: Add a success message
+    # messages.success(request, "You have been logged out successfully.")
     return redirect('homepage')

@@ -25,4 +25,10 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
+    # === BU FONKSİYONU EKLEYİN ===
+    def get_queryset(self, request):
+        # Varsayılan "is_staff=True" filtresini kaldırıp
+        # tüm kullanıcıları getirmesini sağlıyoruz.
+        return self.model.objects.all()
+
 admin.site.register(CustomUser, CustomUserAdmin)

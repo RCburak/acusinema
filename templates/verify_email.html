@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}E-posta Doğrulama{% endblock %}
+{% block title %}Email Verification{% endblock %} {# Changed title #}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'login-register.css' %}">
@@ -15,40 +15,63 @@
         }
         .alert-success { background-color: #28a745; }
         .alert-error { background-color: #dc3545; }
+
+        .verification-input {
+            display: block;
+            text-align: center;
+            font-size: 1.5em;
+            letter-spacing: 8px;
+            max-width: 200px;
+            margin: 0 auto 25px auto;
+            padding: 10px;
+            background-color: var(--color-bg-dark);
+            border: 1px solid #333;
+            color: var(--color-text-light);
+            border-radius: 6px;
+        }
+        .verification-input:focus {
+             border-color: var(--color-primary);
+             outline: none;
+             box-shadow: 0 0 10px rgba(255, 87, 34, 0.3);
+        }
     </style>
 {% endblock %}
 
 {% block content %}
 <main class="main-content-wrapper">
     <div class="account-container">
-        <div class="form-wrapper">
-            
-            <h2 style="text-align: center; margin-bottom: 20px; color: var(--color-text-light);">Hesabınızı Doğrulayın</h2>
-            
+        <div class="form-wrapper" style="max-width: 500px;">
+
+            {# Changed heading and paragraph to English #}
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--color-text-light);">Verify Your Account</h2>
             <p style="text-align: center; color: var(--color-text-subtle); margin-bottom: 30px;">
-                E-posta adresinize gönderilen 6 haneli doğrulama kodunu girerek hesabınızı aktive edin.
+                Enter the 6-digit verification code sent to your email address to activate your account.
             </p>
 
             {% if messages %}
                 {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
+                    <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+                        {{ message }} {# Messages now come from views.py in English #}
                     </div>
                 {% endfor %}
             {% endif %}
 
-            <form method="POST" class="form-section active">
+            <form method="POST">
                 {% csrf_token %}
-                
-                <p>
-                    <label for="id_verification_code" style="display: none;">Doğrulama Kodu</label>
-                    <input type="text" name="verification_code" required id="id_verification_code"
-                           placeholder="------"
-                           style="text-align: center; font-size: 1.5em; letter-spacing: 8px; max-width: 200px; margin: 0 auto 20px auto;"
-                           class="form-section form input">
-                </p>
-                
-                <button type="submit" class="form-submit-btn">Doğrula ve Giriş Yap</button>
+
+                {# Invisible label for accessibility #}
+                <label for="id_verification_code" style="display: none;">Verification Code</label>
+
+                <input type="text"
+                       name="verification_code"
+                       required
+                       id="id_verification_code"
+                       placeholder="------"
+                       maxlength="6"
+                       class="verification-input">
+
+                {# Changed button text to English #}
+                <button type="submit" class="form-submit-btn">Verify and Login</button>
             </form>
 
         </div>
