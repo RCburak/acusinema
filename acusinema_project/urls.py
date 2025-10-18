@@ -19,6 +19,7 @@ urlpatterns = [
     # User Action URLs
     path('account/', core_views.account_page, name='account'),
     path('logout/', core_views.logout_view, name='logout'),
+    path('verify-email/<int:user_id>/', core_views.verify_email, name='verify-email'),
 ]
 
 # To serve media files in development

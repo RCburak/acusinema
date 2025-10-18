@@ -1,16 +1,15 @@
 # core/views.py
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage
-from .forms import ContactForm
 from .forms import ContactForm, CustomUserCreationForm, CustomAuthenticationForm
-from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage
-
+from users.models import CustomUser 
+from django.core.mail import send_mail
+from django.urls import reverse
 
 def homepage(request):
     movies_on_homepage = Acusinema.objects.order_by('-created_at')[:3]
@@ -62,29 +61,6 @@ def contact_page(request):
     return render(request, 'contact.html', context)
 
 def account_page(request):
-    login_form = AuthenticationForm()
-    register_form = UserCreationForm()
-    if request.method == 'POST':
-        if 'login_submit' in request.POST:
-            login_form = AuthenticationForm(request, data=request.POST)
-            if login_form.is_valid():
-                user = login_form.get_user()
-                login(request, user)
-                return redirect('homepage')
-        elif 'register_submit' in request.POST:
-            register_form = UserCreationForm(request.POST)
-            if register_form.is_valid():
-                register_form.save()
-                messages.success(request, 'Your account has been created successfully! You can now log in.')
-                return redirect('account')
-    context = {
-        'login_form': login_form,
-        'register_form': register_form
-    }
-    return render(request, 'account.html', context)
-
-def account_page(request):
-    # Formları kendi custom formlarınızla değiştirin
     login_form = CustomAuthenticationForm()
     register_form = CustomUserCreationForm()
     
@@ -93,16 +69,44 @@ def account_page(request):
             login_form = CustomAuthenticationForm(request, data=request.POST)
             if login_form.is_valid():
                 user = login_form.get_user()
-                login(request, user)
-                return redirect('homepage')
+                # Sadece e-postası doğrulanmış ve aktif kullanıcılar giriş yapabilsin
+                if user.is_active and user.is_email_verified:
+                    login(request, user)
+                    return redirect('homepage')
+                else:
+                    messages.error(request, 'Hesabınız aktif değil veya e-posta adresiniz doğrulanmamış. Lütfen e-postanıza gelen doğrulama kodunu girin.')
+                    # Kullanıcıyı doğrulama sayfasına yönlendir
+                    return redirect('verify-email', user_id=user.pk)
+
         elif 'register_submit' in request.POST:
             register_form = CustomUserCreationForm(request.POST)
             if register_form.is_valid():
-                user = register_form.save()
-                # Kayıt sonrası otomatik giriş yaptırmak isterseniz aşağıdaki satırı ekleyebilirsiniz
-                # login(request, user)
-                messages.success(request, 'Hesabınız başarıyla oluşturuldu! Şimdi giriş yapabilirsiniz.')
-                return redirect('account')
+                user = register_form.save(commit=False)
+                # Kullanıcıyı kaydet ama henüz aktif etme
+                user.is_active = False 
+                user.save()
+
+                # Doğrulama kodu oluştur ve kaydet
+                user.generate_verification_code()
+
+                # Doğrulama e-postası gönder
+                verification_url = request.build_absolute_uri(
+                    reverse('verify-email', kwargs={'user_id': user.pk})
+                )
+                
+                subject = 'Acusinema Hesap Doğrulama'
+                message = (
+                    f'Merhaba {user.first_name},\n\n'
+                    f'Hesabınızı doğrulamak için lütfen aşağıdaki kodu kullanın:\n\n'
+                    f'Doğrulama Kodunuz: {user.verification_code}\n\n'
+                    f'Kodu girmek için bu linke tıklayabilirsiniz: {verification_url}\n\n'
+                    'Teşekkürler,\nAcusinema Ekibi'
+                )
+                
+                send_mail(subject, message, 'noreply@acusinema.com', [user.email])
+                
+                messages.success(request, 'Hesabınız oluşturuldu! Lütfen e-posta adresinize gönderilen doğrulama kodunu girerek hesabınızı aktive edin.')
+                return redirect('verify-email', user_id=user.pk)
     
     context = {
         'login_form': login_form,
@@ -110,6 +114,20 @@ def account_page(request):
     }
     return render(request, 'account.html', context)
 
+def verify_email(request, user_id):
+    user = get_object_or_404(CustomUser, pk=user_id)
+    if request.method == 'POST':
+        code = request.POST.get('verification_code')
+        if code == user.verification_code:
+            user.is_active = True
+            user.is_email_verified = True
+            user.save()
+            login(request, user)
+            messages.success(request, 'E-posta adresiniz başarıyla doğrulandı. Hoş geldiniz!')
+            return redirect('homepage')
+        else:
+            messages.error(request, 'Geçersiz doğrulama kodu.')
+    return render(request, 'verify_email.html', {'user': user})
 
 def logout_view(request):
     logout(request)

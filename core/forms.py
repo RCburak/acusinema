@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.exceptions import ValidationError
 from .models import ContactMessage
-from users.models import CustomUser  # Yeni kullanıcı modelini import edin
+from users.models import CustomUser
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):

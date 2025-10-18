@@ -3,6 +3,8 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
+import random
+import string
 
 class CustomUserManager(BaseUserManager):
     """
@@ -20,6 +22,9 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('is_email_verified', True)
+
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Süper kullanıcının is_staff=True olması gerekir.')
@@ -42,10 +47,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     is_active = models.BooleanField(
         'aktif',
-        default=True,
+        default=False, # Yeni kullanıcılar doğrulanana kadar aktif olmasın
         help_text='Bu kullanıcının aktif olarak kabul edilip edilmeyeceğini belirtir.',
     )
     date_joined = models.DateTimeField('katılım tarihi', default=timezone.now)
+
+    # Yeni eklenen alanlar
+    is_email_verified = models.BooleanField('e-posta doğrulandı', default=False)
+    verification_code = models.CharField('doğrulama kodu', max_length=6, blank=True, null=True)
+
 
     objects = CustomUserManager()
 
@@ -54,3 +64,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    def generate_verification_code(self):
+        self.verification_code = ''.join(random.choices(string.digits, k=6))
+        self.save()
