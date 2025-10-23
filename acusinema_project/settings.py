@@ -75,10 +75,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Kullanıcı ve E-posta Ayarları
 AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_URL = 'account'
-LOGOUT_REDIRECT_URL = 'homepage' 
+LOGOUT_REDIRECT_URL = 'homepage'
 
-# E-posta ayarları (geliştirme için konsola yazdırır)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
