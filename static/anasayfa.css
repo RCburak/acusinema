@@ -384,3 +384,89 @@ body {
 .icon-login::before, .icon-logout::before {
     content: ''; /* Eski emoji ikonları kaldırır */
 }
+
+/* ======================================== */
+/* MOBİL UYUMLULUK DÜZENLEMELERİ */
+/* ======================================== */
+
+@media (max-width: 992px) {
+    /* Tablet ve altı: Başlık, logo ve menüyü dikey hizala */
+    .site-header,
+    .header-main {
+        flex-direction: column; /* Ana bileşenleri alt alta sırala */
+        align-items: center; /* Ortala */
+        gap: 20px; /* Aralarına boşluk ver */
+        padding-left: 20px;  /* Kenar boşluklarını ayarla */
+        padding-right: 20px;
+    }
+
+    .main-nav {
+        width: 100%;
+    }
+
+    .nav-list {
+        justify-content: center; /* Menü öğelerini ortala */
+        flex-wrap: wrap; /* Gerekirse alt satıra indir */
+    }
+    
+    .header-auth {
+        justify-content: center; /* Giriş/Çıkış butonlarını ortala */
+        width: 100%;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Telefonlar: Yazı tiplerini ve slider'ı ayarla */
+    .heading-primary {
+        font-size: 2.2em; /* Ana başlığı küçült */
+    }
+    
+    .text-lead {
+        font-size: 1em; /* Alt metni küçült */
+    }
+
+    .slider-container {
+        width: 95%; /* Slider genişliğini artır */
+    }
+
+    .slider-control {
+        /* Slider kontrol butonlarını küçült */
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+    }
+
+    .slider-control--prev { left: 10px; }
+    .slider-control--next { right: 10px; }
+}
+
+@media (max-width: 480px) {
+    /* En küçük ekranlar: Alanları optimize et */
+    .brand-title {
+        font-size: 1.5em; /* Logoyu küçült */
+    }
+
+    .hero-slider-wrapper {
+        height: 55vh; /* Slider yüksekliğini azalt */
+    }
+    
+    .heading-primary {
+        font-size: 1.9em;
+    }
+    
+    /* Navigasyon ve giriş butonları için dolguyu (padding) azalt */
+    .nav-link {
+        padding: 8px 10px;
+        font-size: 0.9em;
+    }
+    
+    .auth-link {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+
+    .user-greeting {
+        font-size: 0.85em;
+    }
+}
