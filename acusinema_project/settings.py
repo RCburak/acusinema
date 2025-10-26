@@ -4,17 +4,14 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Bu ayarlar doğru, Render Environment Variables'dan okunacak
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-# ALLOWED_HOSTS'u güncelledim
-ALLOWED_HOSTS = ['localhost', '127.0.0.1'] # <-- GÜNCELLENDİ
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-    ALLOWED_HOSTS.append('acusinema.onrender.com') # <-- EKLENDİ (Render URL'niz)
-
+    ALLOWED_HOSTS.append('acusinema.onrender.com')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -24,17 +21,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # Kendi uygulamalarınız
     'core',
     'users',
 
-    # Üçüncü parti uygulamalar
-    'storages',  # <-- EKLENDİ (Dosya depolama için)
+    'storages',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # Bu satır doğru yerde
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -62,7 +57,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'acusinema_project.wsgi.application'
 
-# Veritabanı ayarınız doğru (Render için)
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
@@ -82,43 +76,32 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# -------------------------------------------------------------------
-# AWS S3, STATIC VE MEDIA AYARLARI (KOMPLE GÜNCELLENDİ)
-# -------------------------------------------------------------------
-
-# AWS S3 AYARLARI (Değerleri Render'dan okuyacak)
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-AWS_S3_FILE_OVERWRITE = False # Aynı isimli dosya yüklenirse üzerine yazmasın
+AWS_S3_FILE_OVERWRITE = False
 
-# STATİK DOSYALAR (CSS, JS)
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles' # collectstatic buraya toplar
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# MEDYA DOSYALARI (Kullanıcı Yüklemeleri)
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/" # <-- GÜNCELLENDİ
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 MEDIA_ROOT = BASE_DIR / 'media' 
 
-# STORAGES SÖZLÜĞÜ (Hatanızı düzelten kısım)
 STORAGES = {
-    # Medya dosyaları (upload) için S3 kullanılacak
-    "default": { # <-- EKLENDİ (Bu eksikti)
+    "default": {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
         "OPTIONS": {
-            "location": "media", # Dosyalar S3 bucket'ında 'media' klasörüne yüklensin
+            "location": "media",
             "file_overwrite": False,
         },
     },
-    # Statik dosyalar (css/js) için WhiteNoise kullanılacak
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
-# -------------------------------------------------------------------
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -126,9 +109,18 @@ AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_URL = 'account'
 LOGOUT_REDIRECT_URL = 'homepage'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp-relay.brevo.com'
+    EMAIL_HOST_USER = 'apikey'
+    EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
 
-# LOGGING AYARLARINIZ (Dokunulmadı)
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
