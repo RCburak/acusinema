@@ -117,9 +117,9 @@ else:
     EMAIL_HOST_USER = 'apikey'
     EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
     EMAIL_PORT = 465
-    EMAIL_USE_TLS = True
-
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+    EMAIL_USE_TLS = False 
+    EMAIL_USE_SSL = True
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 
 LOGGING = {
     'version': 1,
