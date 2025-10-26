@@ -1,5 +1,3 @@
-# core/views.py
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
@@ -10,6 +8,7 @@ from .forms import ContactForm, CustomUserCreationForm, CustomAuthenticationForm
 from users.models import CustomUser
 from django.core.mail import send_mail
 from django.urls import reverse
+from django.conf import settings # <-- 1. DEĞİŞİKLİK (EKLENDİ)
 
 def homepage(request):
     movies_on_homepage = Acusinema.objects.order_by('-created_at')[:3]
@@ -50,7 +49,6 @@ def contact_page(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            # Changed message to English
             messages.success(request, 'Your message has been sent successfully.')
             return redirect('contact')
     else:
@@ -61,7 +59,6 @@ def contact_page(request):
     }
     return render(request, 'contact.html', context)
 
-# Translate account_page messages and email content
 def account_page(request):
     login_form = CustomAuthenticationForm()
     register_form = CustomUserCreationForm()
@@ -76,7 +73,6 @@ def account_page(request):
                     login(request, user)
                     return redirect('homepage')
                 else:
-                    # Changed message to English
                     messages.error(request, 'Your account is inactive or your email address is not verified. Please enter the verification code sent to your email.')
                     return redirect('verify-email', user_id=user.pk)
             else:
@@ -92,7 +88,7 @@ def account_page(request):
                         is_email_verified=False
                     )
                     existing_unverified_user.delete()
-                    print(f"Deleted old unverified record for: {submitted_email}") # Console message
+                    print(f"Deleted old unverified record for: {submitted_email}")
                 except CustomUser.DoesNotExist:
                     pass
 
@@ -101,7 +97,7 @@ def account_page(request):
 
             if register_form.is_valid():
                 user = register_form.save(commit=False)
-                user.is_active = False # Keep inactive until verified
+                user.is_active = False
                 user.save()
 
                 user.generate_verification_code()
@@ -110,7 +106,6 @@ def account_page(request):
                     reverse('verify-email', kwargs={'user_id': user.pk})
                 )
 
-                # Changed email subject and message to English
                 subject = 'Acusinema Account Verification'
                 message = (
                     f'Hello {user.first_name},\n\n'
@@ -120,12 +115,12 @@ def account_page(request):
                     'Thanks,\nThe Acusinema Team'
                 )
 
-                send_mail(subject, message, 'noreply@acusinema.com', [user.email])
+                # 2. DEĞİŞİKLİK (DÜZENLENDİ)
+                # E-postayı, ayarlarınızdaki doğrulanmış adresten gönderir
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
 
-                # Changed message to English
                 messages.success(request, 'Your account has been created! Please activate your account by entering the verification code sent to your email address.')
                 return redirect('verify-email', user_id=user.pk)
-            # else: Form is invalid, errors will be shown
 
     context = {
         'login_form': login_form,
@@ -135,7 +130,6 @@ def account_page(request):
     return render(request, 'account.html', context)
 
 
-# Translate verify_email messages
 def verify_email(request, user_id):
     user = get_object_or_404(CustomUser, pk=user_id)
     if request.method == 'POST':
@@ -143,19 +137,15 @@ def verify_email(request, user_id):
         if code == user.verification_code:
             user.is_active = True
             user.is_email_verified = True
-            user.verification_code = None # Clear the code after successful verification
+            user.verification_code = None
             user.save()
             login(request, user)
-            # Changed messages to English
             messages.success(request, 'Your email address has been successfully verified. Welcome!')
             return redirect('homepage')
         else:
             messages.error(request, 'Invalid verification code.')
     return render(request, 'verify_email.html', {'user': user})
 
-# logout_view usually doesn't need translation, but double-check if you added messages
 def logout_view(request):
     logout(request)
-    # Optional: Add a success message
-    # messages.success(request, "You have been logged out successfully.")
     return redirect('homepage')
