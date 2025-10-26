@@ -1,3 +1,5 @@
+# settings.py (django-anymail ile güncellendi)
+
 import os
 import dj_database_url # pyright: ignore[reportMissingImports]
 from pathlib import Path
@@ -20,11 +22,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'core',
     'users',
 
     'storages',
+    'anymail',  # <-- BURAYA EKLENDİ
 ]
 
 MIDDLEWARE = [
@@ -88,7 +91,7 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-MEDIA_ROOT = BASE_DIR / 'media' 
+MEDIA_ROOT = BASE_DIR / 'media'
 
 STORAGES = {
     "default": {
@@ -109,17 +112,15 @@ AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_URL = 'account'
 LOGOUT_REDIRECT_URL = 'homepage'
 
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = 'smtp-relay.brevo.com'
-    EMAIL_HOST_USER = 'apikey'
-    EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
-    EMAIL_PORT = 465
-    EMAIL_USE_TLS = False 
-    EMAIL_USE_SSL = True
-    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+# --- ANYMAIL (BREVO API) E-POSTA AYARLARI ---
+# Önceki EMAIL_BACKEND, EMAIL_HOST, EMAIL_PORT vb. ayarlar SİLİNDİ
+# Yerine bunlar eklendi:
+ANYMAIL = {
+    "BREVO_API_KEY": os.environ.get("SENDGRID_API_KEY"), # Render'daki API anahtarını okur (adı SENDGRID olsa da değeri Brevo key)
+}
+EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"  # Brevo API backend'ini kullanır
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL") # Render'daki gönderici adresini okur
+# --- E-POSTA AYARLARI SONU ---
 
 LOGGING = {
     'version': 1,
