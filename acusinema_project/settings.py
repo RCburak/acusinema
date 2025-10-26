@@ -1,16 +1,20 @@
-# acusinema_project/settings.py
 import os
 import dj_database_url # pyright: ignore[reportMissingImports]
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Bu ayarlar doğru, Render Environment Variables'dan okunacak
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
-ALLOWED_HOSTS = []
+
+# ALLOWED_HOSTS'u güncelledim
+ALLOWED_HOSTS = ['localhost', '127.0.0.1'] # <-- GÜNCELLENDİ
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    ALLOWED_HOSTS.append('acusinema.onrender.com') # <-- EKLENDİ (Render URL'niz)
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,13 +23,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Kendi uygulamalarınız
     'core',
-    'users'
+    'users',
+
+    # Üçüncü parti uygulamalar
+    'storages',  # <-- EKLENDİ (Dosya depolama için)
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Bu satır doğru yerde
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -53,11 +62,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'acusinema_project.wsgi.application'
 
+# Veritabanı ayarınız doğru (Render için)
 DATABASES = {
     'default': dj_database_url.config(
-        # Render'ın ortam değişkeni olarak vereceği veritabanı URL'si
         default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600 # Bağlantıyı açık tutma süresi
+        conn_max_age=600
     )
 }
 
@@ -73,16 +82,43 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+# -------------------------------------------------------------------
+# AWS S3, STATIC VE MEDIA AYARLARI (KOMPLE GÜNCELLENDİ)
+# -------------------------------------------------------------------
+
+# AWS S3 AYARLARI (Değerleri Render'dan okuyacak)
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+AWS_S3_FILE_OVERWRITE = False # Aynı isimli dosya yüklenirse üzerine yazmasın
+
+# STATİK DOSYALAR (CSS, JS)
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles' # collectstatic buraya toplar
+
+# MEDYA DOSYALARI (Kullanıcı Yüklemeleri)
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/" # <-- GÜNCELLENDİ
+MEDIA_ROOT = BASE_DIR / 'media' 
+
+# STORAGES SÖZLÜĞÜ (Hatanızı düzelten kısım)
 STORAGES = {
+    # Medya dosyaları (upload) için S3 kullanılacak
+    "default": { # <-- EKLENDİ (Bu eksikti)
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "location": "media", # Dosyalar S3 bucket'ında 'media' klasörüne yüklensin
+            "file_overwrite": False,
+        },
+    },
+    # Statik dosyalar (css/js) için WhiteNoise kullanılacak
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media' # Media dosyaları için hala bu ayar gerekli
+# -------------------------------------------------------------------
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -92,17 +128,15 @@ LOGOUT_REDIRECT_URL = 'homepage'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-
-# settings.py dosyasının sonuna ekleyin
-
+# LOGGING AYARLARINIZ (Dokunulmadı)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
             'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
-                       'pathname=%(pathname)s lineno=%(lineno)d ' +
-                       'funcname=%(funcName)s %(message)s'),
+                         'pathname=%(pathname)s lineno=%(lineno)d ' +
+                         'funcname=%(funcName)s %(message)s'),
             'datefmt': '%Y-%m-%d %H:%M:%S'
         },
         'simple': {
@@ -111,7 +145,7 @@ LOGGING = {
     },
     'handlers': {
         'console': {
-            'level': 'INFO',  # VEYA 'DEBUG' olarak değiştirebilirsiniz
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         }
@@ -119,12 +153,12 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'INFO',  # Hata ayıklama için 'DEBUG' yapabilirsiniz
+            'level': 'INFO',
             'propagate': True,
         },
         'django.request': {
             'handlers': ['console'],
-            'level': 'ERROR', # Sadece 500 hatalarını görmek için
+            'level': 'ERROR',
             'propagate': False,
         },
     }
