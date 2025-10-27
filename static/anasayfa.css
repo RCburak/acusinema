@@ -442,10 +442,13 @@ body.no-scroll {
 @media (max-width: 768px) {
     .site-header {
         padding: 10px 4vw; /* Header padding azalt */
+        flex-wrap: wrap; /* Gerekirse alta kaydır */
     }
     .header-main {
         width: 100%; /* Mobil menü butonu için */
         justify-content: space-between; /* Logo sola, buton sağa */
+        order: 1; /* Önce logo ve menü ikonu */
+        padding-bottom: 5px; /* Alt boşluk */
     }
     .main-nav {
         /* Mobil menü görünümü */
@@ -482,7 +485,7 @@ body.no-scroll {
 
     .mobile-menu-toggle {
         display: block; /* Hamburger ikonu göster */
-        order: 3; /* Sağ tarafta kalması için (logo-auth-ikon) */
+        order: 3; /* Sağ tarafta kalması için */
     }
     /* Hamburger ikon animasyonu (açıkken X olur) */
     .mobile-menu-toggle[aria-expanded="true"] span:nth-child(1) {
@@ -496,10 +499,8 @@ body.no-scroll {
     }
 
     .header-auth {
-        /* Mobil menü açıldığında giriş/çıkış butonlarını gizle (isteğe bağlı) */
-        /* display: none; */
-        /* Veya menü içine taşıyabilirsiniz */
-        margin-left: auto; /* Mobil menü varken auth'u sağa iter */
+        order: 2; /* İkonun solunda kalması için */
+        margin-left: auto; /* Mümkün olduğunca sağa iter */
         gap: 10px;
     }
     .user-greeting {
@@ -579,13 +580,23 @@ body.no-scroll {
     .brand-logo {
         height: 35px; /* Logoyu küçült */
     }
-    .auth-link span {
-         display: none; /* Butonlardaki metni gizle, sadece ikon kalsın */
+    /* Giriş/Çıkış butonlarını sadece ikon olarak göster */
+    .auth-link .icon-login + span, /* Sadece metin içeren span'i seçer */
+    .auth-link .icon-logout + span { /* Sadece metin içeren span'i seçer */
+         display: none;
     }
      .auth-link {
         min-width: auto;
-        padding: 8px 10px; /* Sadece ikon için padding */
+        width: 40px; /* İkon için sabit genişlik */
+        height: 40px; /* İkon için sabit yükseklik */
+        padding: 0; /* İç boşluğu sıfırla */
+        justify-content: center; /* İkonu ortala */
+        border-radius: 50%; /* Tam yuvarlak yap */
      }
+     .icon-login, .icon-logout {
+        margin: 0; /* İkonun içindeki boşluğu kaldır */
+     }
+
     .heading-primary {
         font-size: 1.8em;
     }
