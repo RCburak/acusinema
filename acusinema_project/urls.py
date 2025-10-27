@@ -50,6 +50,7 @@ urlpatterns = [
          ),
          name='password_reset_complete'),
     # --- END PASSWORD RESET URLs ---
+    path('profile/', core_views.profile_page, name='profile'),
 ]
 
 # Serve media files during development

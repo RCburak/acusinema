@@ -9,6 +9,7 @@ from users.models import CustomUser
 from django.core.mail import send_mail
 from django.urls import reverse
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 def homepage(request):
     movies_on_homepage = Acusinema.objects.order_by('-created_at')[:3]
@@ -58,6 +59,15 @@ def contact_page(request):
         'form': form,
     }
     return render(request, 'contact.html', context)
+
+@login_required # Sadece giriş yapmış kullanıcılar erişebilir
+def profile_page(request):
+    """Kullanıcının profil bilgilerini gösterir."""
+    user = request.user # Giriş yapmış kullanıcıyı al
+    context = {
+        'user_profile': user # Template'e göndermek için context'e ekle
+    }
+    return render(request, 'profile.html', context)
 
 def account_page(request):
     # Redirect logged-in users away from login/register page (optional but good practice)

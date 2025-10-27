@@ -41,12 +41,12 @@
                 <div class="user-menu-container">
                     <button class="auth-link login-btn user-menu-toggle">
                         <i class="icon-login"></i>
-                        <span>Hello, {{ user.first_name|default:user.email }}</span>
+                        <span>Welcome, {{ user.first_name|default:user.email }}</span>
                         <span class="dropdown-arrow">&#9662;</span> </button>
                     
                     <div class="user-menu-dropdown">
-                        <a href="{% url 'account' %}" class="dropdown-link">My Profile</a>
-                        <a href="#" class="dropdown-link">My Reservations</a> <div class="dropdown-divider"></div>
+                        {# <a href="{% url 'account' %}" class="dropdown-link">My Profile</a> #} <a href="{% url 'profile' %}" class="dropdown-link">My Profile</a> <a href="#" class="dropdown-link">My Reservations</a>
+                        <div class="dropdown-divider"></div>
                         <a href="{% url 'logout' %}" class="dropdown-link dropdown-link--logout">
                             <i class="icon-logout"></i> Log out
                         </a>
