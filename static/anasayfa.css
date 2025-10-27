@@ -641,3 +641,86 @@ body.no-scroll {
          height: 40vh;
     }
 }
+
+/* ========================================================= */
+/* KULLANICI AÇILIR MENÜ STİLLERİ */
+/* ========================================================= */
+.user-menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+.user-menu-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* İkon, yazı ve ok arasındaki boşluk */
+}
+
+.user-menu-toggle .dropdown-arrow {
+    font-size: 0.7em;
+    transition: transform 0.3s ease;
+}
+
+.user-menu-dropdown {
+    display: none; /* Varsayılan olarak gizli */
+    position: absolute;
+    top: 110%; /* Butonun %10 altında başlasın */
+    right: 0;
+    min-width: 200px;
+    background-color: var(--color-bg-card);
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    border: 1px solid #333;
+    z-index: 110;
+    overflow: hidden;
+    padding: 5px 0; /* Üst ve altta küçük boşluk */
+}
+
+/* Fare üzerine gelince menüyü göster */
+.user-menu-container:hover .user-menu-dropdown {
+    display: block;
+}
+
+/* Fare üzerine gelince oku döndür */
+.user-menu-container:hover .user-menu-toggle .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.user-menu-dropdown .dropdown-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: var(--color-text-subtle);
+    text-decoration: none;
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.user-menu-dropdown .dropdown-link:hover {
+    background-color: var(--color-primary);
+    color: #fff;
+    transform: translateX(5px); /* Küçük bir kayma efekti */
+}
+
+.user-menu-dropdown .dropdown-link .icon-logout {
+    width: 16px;
+    height: 16px;
+}
+
+.user-menu-dropdown .dropdown-link--logout {
+    color: var(--color-primary);
+}
+.user-menu-dropdown .dropdown-link--logout:hover {
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+.user-menu-dropdown .dropdown-divider {
+    height: 1px;
+    background-color: #333;
+    margin: 5px 0;
+}
