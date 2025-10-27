@@ -214,24 +214,26 @@ body.no-scroll {
 
 /* =============== SLIDER ALANI =============== */
 .hero-slider-wrapper {
-    display: flex;
+    display: flex; /* İçeriği ortalamak için */
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 70vh;
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px;
+    background-color: var(--color-bg-dark); /* Arka planı koyu yapalım */
+    padding: 0; /* İç boşluğu sıfırla */
     overflow: hidden;
+    margin-top: 0; /* Üstteki boşluğu kaldır */
 }
 .slider-container {
-    width: 80%;
-    max-width: 1000px;
+    width: 100%; /* Masaüstünde tam genişlik */
+    max-width: var(--max-content-width); /* Ama max genişliği aşmasın */
     height: 100%;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
-    border-radius: 12px;
-    background-color: var(--color-bg-dark);
+    /* Gölge ve border radius masaüstünde olmayabilir, isteğe bağlı */
+    /* box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9); */
+    /* border-radius: 12px; */
+    background-color: var(--color-bg-dark); /* Arka plan */
 }
 .slider-track {
     display: flex;
@@ -249,8 +251,8 @@ body.no-scroll {
 .slide-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Resmin kesilmesini önler, alanı kaplar ve ortalar */
-    object-position: center;
+    object-fit: cover; /* Resmi alanı kaplayacak şekilde boyutlandırır, gerekirse kırpar */
+    object-position: center; /* Kırpma işlemi olursa merkezden yapar */
     display: block;
 }
 
@@ -258,7 +260,7 @@ body.no-scroll {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0,0,0, 0.3);
+    background: rgba(0,0,0, 0.4); /* Biraz daha belirgin */
     color: #FFFFFF;
     border: none;
     padding: 15px 20px;
@@ -279,8 +281,8 @@ body.no-scroll {
     opacity: 1;
     transform: translateY(-50%) scale(1.1);
 }
-.slider-control--prev { left: 20px; }
-.slider-control--next { right: 20px; }
+.slider-control--prev { left: 30px; } /* Kenardan biraz içeride */
+.slider-control--next { right: 30px; }
 
 
 /* ==================== ANA İÇERİK VE KARTLAR ==================== */
@@ -440,15 +442,15 @@ body.no-scroll {
         flex-wrap: wrap;
         justify-content: space-between;
     }
-    /* === Header Eleman Sıralaması === */
+    /* === Header Eleman Sıralaması (Hamburger Sola) === */
     .mobile-menu-toggle {
         display: block;
-        order: 1; /* En sola al */
+        order: 1; /* En sola */
         margin-left: 0;
-        margin-right: 15px; /* Logo ile arasına boşluk koy */
+        margin-right: 15px;
     }
     .header-main {
-        order: 2; /* İkonun sağına al */
+        order: 2; /* İkonun sağına */
         width: auto;
         flex-grow: 0;
         gap: 15px;
@@ -458,7 +460,7 @@ body.no-scroll {
         gap: 10px;
     }
     .header-auth {
-        order: 3; /* En sağa al */
+        order: 3; /* En sağa */
         margin-left: auto;
         gap: 10px;
     }
@@ -515,13 +517,22 @@ body.no-scroll {
     .auth-link {
         padding: 8px 15px;
         font-size: 0.9em;
-        min-width: auto;
-        border-radius: 25px; /* Tekrar oval olmasını sağla */
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Gölgeyi geri getir */
+        min-width: auto; /* Minimum genişliği kaldır */
+        border-radius: 25px; /* Yuvarlak kalsın */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+    .auth-link span { /* Metin görünür kalsın */
+        display: inline;
     }
     .icon-login, .icon-logout {
         width: 18px; height: 18px;
+        margin-right: 5px; /* İkonla yazı arası boşluk */
     }
+    .auth-link span + i { /* Eğer ikon metinden sonraysa boşluk verme */
+        margin-right: 0;
+        margin-left: 5px;
+    }
+
 
     /* Slider Mobil */
     .hero-slider-wrapper {
@@ -531,6 +542,10 @@ body.no-scroll {
     .slider-container {
         width: 100%;
         border-radius: 8px;
+        background-color: #000; /* Resim sığmazsa arka plan siyah olsun */
+    }
+    .slide-image {
+         object-fit: contain; /* Mobilde resmi tamamen göstermeyi dene */
     }
     .slider-control {
         padding: 10px 15px;
@@ -600,27 +615,15 @@ body.no-scroll {
         margin-right: 10px;
      }
 
-    /* Login Butonu için düzeltmeler */
+    /* Login butonu için */
     .auth-link {
-        min-width: 90px; /* Butonun minimum genişliğini artırdım */
-        width: auto; /* Otomatik genişlik, içeriğe göre ayarlanır */
-        height: auto; /* Otomatik yükseklik */
-        padding: 8px 15px; /* Normal padding değerlerini geri getirdim */
-        border-radius: 25px; /* Yuvarlak köşeleri koru */
-        display: inline-flex; /* Flex özelliğiyle içeriği ortala */
-        align-items: center;
-        justify-content: center;
-        gap: 8px; /* İkon ve yazı arası boşluk */
-        font-size: 0.9em; /* Yazı boyutunu koru */
+        padding: 6px 12px; /* Daha küçük buton */
+        font-size: 0.85em;
+        gap: 6px; /* İkon ve yazı arası daha az boşluk */
     }
-    .auth-link span { /* Buton içindeki yazı tekrar görünür olsun */
-        display: inline;
+    .icon-login, .icon-logout {
+        width: 16px; height: 16px;
     }
-     .icon-login, .icon-logout {
-        margin: 0;
-        width: 18px; /* İkon boyutunu koru */
-        height: 18px;
-     }
 
     .heading-primary {
         font-size: 1.6em;
@@ -636,8 +639,5 @@ body.no-scroll {
     }
     .hero-slider-wrapper {
          height: 40vh;
-    }
-    .slide-image {
-        object-fit: cover; /* Resmi kesmeden alanı doldurmasını sağla */
     }
 }
