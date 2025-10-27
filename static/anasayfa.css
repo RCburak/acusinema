@@ -122,7 +122,6 @@ body.no-scroll {
     padding: 10px;
     cursor: pointer;
     z-index: 110;
-    /* order ile sola alınacak */
 }
 .mobile-menu-toggle span {
     display: block;
@@ -222,7 +221,7 @@ body.no-scroll {
     height: 70vh;
     background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
-    overflow: hidden; /* Taşmaları engelle */
+    overflow: hidden;
 }
 .slider-container {
     width: 80%;
@@ -250,7 +249,7 @@ body.no-scroll {
 .slide-image {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* cover yerine contain dene, resmi tamamen göstermesi için */
+    object-fit: cover; /* Resmin kesilmesini önler, alanı kaplar ve ortalar */
     object-position: center;
     display: block;
 }
@@ -430,7 +429,7 @@ body.no-scroll {
         font-size: 1.5em;
     }
     .hero-slider-wrapper {
-        height: 60vh; /* Yüksekliği biraz daha azalt */
+        height: 60vh;
     }
 }
 
@@ -443,24 +442,24 @@ body.no-scroll {
     }
     /* === Header Eleman Sıralaması === */
     .mobile-menu-toggle {
-        display: block; /* Hamburger ikonu göster */
+        display: block;
         order: 1; /* En sola al */
-        margin-left: 0; /* Sol boşluğu sıfırla */
+        margin-left: 0;
         margin-right: 15px; /* Logo ile arasına boşluk koy */
     }
     .header-main {
         order: 2; /* İkonun sağına al */
         width: auto;
         flex-grow: 0;
-        gap: 15px; /* Logo ile başlık arasını daralt */
-        justify-content: flex-start; /* Sola yasla */
+        gap: 15px;
+        justify-content: flex-start;
     }
      .header-brand {
-        gap: 10px; /* Logo ile başlık arasını daralt */
+        gap: 10px;
     }
     .header-auth {
         order: 3; /* En sağa al */
-        margin-left: auto; /* Mümkün olduğunca sağa iter */
+        margin-left: auto;
         gap: 10px;
     }
 
@@ -474,7 +473,7 @@ body.no-scroll {
         background-color: var(--color-bg-card);
         border-top: 1px solid #333;
         box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        order: 4; /* En alta al, header'ın altına */
+        order: 4;
     }
     .main-nav--open {
         display: block;
@@ -517,6 +516,8 @@ body.no-scroll {
         padding: 8px 15px;
         font-size: 0.9em;
         min-width: auto;
+        border-radius: 25px; /* Tekrar oval olmasını sağla */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Gölgeyi geri getir */
     }
     .icon-login, .icon-logout {
         width: 18px; height: 18px;
@@ -524,7 +525,7 @@ body.no-scroll {
 
     /* Slider Mobil */
     .hero-slider-wrapper {
-        height: 50vh; /* Yüksekliği küçült */
+        height: 50vh;
         padding: 10px;
     }
     .slider-container {
@@ -548,14 +549,14 @@ body.no-scroll {
         padding: 0 15px var(--spacing-medium) 15px;
     }
     .heading-primary {
-        font-size: 2em; /* Biraz küçült */
+        font-size: 2em;
     }
     .heading-secondary {
-        font-size: 1.5em; /* Biraz küçült */
-        padding-left: 10px; /* Sol boşluğu azalt */
+        font-size: 1.5em;
+        padding-left: 10px;
     }
     .text-lead {
-        font-size: 0.95em; /* Biraz küçült */
+        font-size: 0.95em;
     }
     .section {
         padding: var(--spacing-medium) 0;
@@ -579,7 +580,7 @@ body.no-scroll {
         font-size: 1.2em;
     }
     .movie-card__button {
-        padding: 10px 15px; /* Buton boyutunu küçült */
+        padding: 10px 15px;
         font-size: 0.9em;
     }
 }
@@ -587,52 +588,56 @@ body.no-scroll {
 /* Sadece Çok Küçük Ekranlar (Örn: 480px altı) */
 @media (max-width: 480px) {
     .brand-title {
-        font-size: 1.2em; /* Başlığı daha da küçült */
+        font-size: 1.2em;
     }
     .brand-logo {
-        height: 30px; /* Logoyu küçült */
+        height: 30px;
     }
      .header-main {
-        gap: 10px; /* İkon ve logo arası */
+        gap: 10px;
      }
       .mobile-menu-toggle {
-        margin-right: 10px; /* İkon ve logo arası */
+        margin-right: 10px;
      }
 
-    /* Giriş/Çıkış butonlarını sadece ikon olarak göster */
-    .auth-link span,
-    .auth-link .icon-login + span,
-    .auth-link .icon-logout + span {
-         display: none;
-    }
-     .auth-link {
-        min-width: auto;
-        width: 40px;
-        height: 40px;
-        padding: 0;
+    /* Login Butonu için düzeltmeler */
+    .auth-link {
+        min-width: 90px; /* Butonun minimum genişliğini artırdım */
+        width: auto; /* Otomatik genişlik, içeriğe göre ayarlanır */
+        height: auto; /* Otomatik yükseklik */
+        padding: 8px 15px; /* Normal padding değerlerini geri getirdim */
+        border-radius: 25px; /* Yuvarlak köşeleri koru */
+        display: inline-flex; /* Flex özelliğiyle içeriği ortala */
+        align-items: center;
         justify-content: center;
-        border-radius: 50%;
-     }
+        gap: 8px; /* İkon ve yazı arası boşluk */
+        font-size: 0.9em; /* Yazı boyutunu koru */
+    }
+    .auth-link span { /* Buton içindeki yazı tekrar görünür olsun */
+        display: inline;
+    }
      .icon-login, .icon-logout {
         margin: 0;
+        width: 18px; /* İkon boyutunu koru */
+        height: 18px;
      }
 
     .heading-primary {
-        font-size: 1.6em; /* Başlıkları daha da küçült */
+        font-size: 1.6em;
     }
      .heading-secondary {
         font-size: 1.3em;
     }
     .movie-grid {
-        grid-template-columns: 1fr; /* Tek sütun */
+        grid-template-columns: 1fr;
     }
      .movie-card__figure {
         height: 400px;
     }
     .hero-slider-wrapper {
-         height: 40vh; /* Slider yüksekliğini daha da azalt */
+         height: 40vh;
     }
     .slide-image {
-        object-fit: cover; /* Çok küçük ekranlarda contain yerine cover daha iyi olabilir */
+        object-fit: cover; /* Resmi kesmeden alanı doldurmasını sağla */
     }
 }
