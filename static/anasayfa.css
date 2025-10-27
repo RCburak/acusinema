@@ -122,7 +122,7 @@ body.no-scroll {
     padding: 10px;
     cursor: pointer;
     z-index: 110;
-    margin-left: auto;
+    /* order ile sola alınacak */
 }
 .mobile-menu-toggle span {
     display: block;
@@ -214,7 +214,6 @@ body.no-scroll {
 
 
 /* =============== SLIDER ALANI =============== */
-
 .hero-slider-wrapper {
     display: flex;
     justify-content: center;
@@ -223,6 +222,7 @@ body.no-scroll {
     height: 70vh;
     background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
+    overflow: hidden; /* Taşmaları engelle */
 }
 .slider-container {
     width: 80%;
@@ -241,19 +241,17 @@ body.no-scroll {
     transform: translate3d(0, 0, 0);
     will-change: transform;
     backface-visibility: hidden;
-    /* width değeri JS tarafından ayarlanacak */
 }
 .slider-slide {
     flex-shrink: 0;
     height: 100%;
     transform: translate3d(0, 0, 0);
-    /* width değeri JS tarafından ayarlanacak */
 }
 .slide-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Resmin taşmasını engeller ve kaplar */
-    object-position: center; /* Resmi ortalar */
+    object-fit: contain; /* cover yerine contain dene, resmi tamamen göstermesi için */
+    object-position: center;
     display: block;
 }
 
@@ -287,7 +285,6 @@ body.no-scroll {
 
 
 /* ==================== ANA İÇERİK VE KARTLAR ==================== */
-
 .main-content-wrapper {
     max-width: var(--max-content-width);
     margin: 0 auto;
@@ -417,7 +414,6 @@ body.no-scroll {
     font-size: 0.9em;
 }
 
-
 /* ========================================================= */
 /* MOBİL UYUMLULUK (MEDIA QUERIES) */
 /* ========================================================= */
@@ -433,32 +429,42 @@ body.no-scroll {
     .brand-title {
         font-size: 1.5em;
     }
+    .hero-slider-wrapper {
+        height: 60vh; /* Yüksekliği biraz daha azalt */
+    }
 }
-
 
 /* Küçük Tabletler ve Büyük Telefonlar (Örn: 768px altı) */
 @media (max-width: 768px) {
     .site-header {
         padding: 10px 4vw;
-        flex-wrap: wrap; /* Header içeriğini sığmazsa alt satıra at */
-        justify-content: space-between; /* Logo sola, diğerleri sağa */
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    /* === Header Eleman Sıralaması === */
+    .mobile-menu-toggle {
+        display: block; /* Hamburger ikonu göster */
+        order: 1; /* En sola al */
+        margin-left: 0; /* Sol boşluğu sıfırla */
+        margin-right: 15px; /* Logo ile arasına boşluk koy */
     }
     .header-main {
-        order: 1; /* Logo ve hamburger ikonunu ilk sıraya al */
-        width: auto; /* Otomatik genişlik */
-        flex-grow: 0; /* Büyümesini engelle */
+        order: 2; /* İkonun sağına al */
+        width: auto;
+        flex-grow: 0;
+        gap: 15px; /* Logo ile başlık arasını daralt */
+        justify-content: flex-start; /* Sola yasla */
+    }
+     .header-brand {
+        gap: 10px; /* Logo ile başlık arasını daralt */
     }
     .header-auth {
-        order: 2; /* Login/Logout butonlarını ortaya al */
-        margin-left: auto; /* Hamburger ikonuna yer açmak için */
+        order: 3; /* En sağa al */
+        margin-left: auto; /* Mümkün olduğunca sağa iter */
         gap: 10px;
     }
-     .mobile-menu-toggle {
-        display: block; /* Hamburger ikonu göster */
-        order: 3; /* En sağa al */
-        margin-left: 10px; /* Auth butonlarından ayır */
-    }
 
+    /* === Açılır Menü Ayarları === */
     .main-nav {
         display: none;
         position: absolute;
@@ -468,7 +474,7 @@ body.no-scroll {
         background-color: var(--color-bg-card);
         border-top: 1px solid #333;
         box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        order: 4; /* En alta al */
+        order: 4; /* En alta al, header'ın altına */
     }
     .main-nav--open {
         display: block;
@@ -503,6 +509,7 @@ body.no-scroll {
         transform: rotate(-45deg) translate(7px, -6px);
     }
 
+    /* === Diğer Header Ayarları === */
     .user-greeting {
         display: none;
     }
@@ -517,7 +524,7 @@ body.no-scroll {
 
     /* Slider Mobil */
     .hero-slider-wrapper {
-        height: 55vh;
+        height: 50vh; /* Yüksekliği küçült */
         padding: 10px;
     }
     .slider-container {
@@ -541,13 +548,14 @@ body.no-scroll {
         padding: 0 15px var(--spacing-medium) 15px;
     }
     .heading-primary {
-        font-size: 2.2em;
+        font-size: 2em; /* Biraz küçült */
     }
     .heading-secondary {
-        font-size: 1.6em;
+        font-size: 1.5em; /* Biraz küçült */
+        padding-left: 10px; /* Sol boşluğu azalt */
     }
     .text-lead {
-        font-size: 1em;
+        font-size: 0.95em; /* Biraz küçült */
     }
     .section {
         padding: var(--spacing-medium) 0;
@@ -570,23 +578,33 @@ body.no-scroll {
     .movie-card__title {
         font-size: 1.2em;
     }
+    .movie-card__button {
+        padding: 10px 15px; /* Buton boyutunu küçült */
+        font-size: 0.9em;
+    }
 }
 
 /* Sadece Çok Küçük Ekranlar (Örn: 480px altı) */
 @media (max-width: 480px) {
     .brand-title {
-        font-size: 1.3em;
+        font-size: 1.2em; /* Başlığı daha da küçült */
     }
     .brand-logo {
-        height: 35px;
+        height: 30px; /* Logoyu küçült */
     }
+     .header-main {
+        gap: 10px; /* İkon ve logo arası */
+     }
+      .mobile-menu-toggle {
+        margin-right: 10px; /* İkon ve logo arası */
+     }
+
     /* Giriş/Çıkış butonlarını sadece ikon olarak göster */
-    .auth-link span, /* İkon dışındaki span'ları gizle */
-    .auth-link .icon-login + span, /* Eski ikon span'ini de gizle */
-    .auth-link .icon-logout + span { /* Eski ikon span'ini de gizle */
+    .auth-link span,
+    .auth-link .icon-login + span,
+    .auth-link .icon-logout + span {
          display: none;
     }
-    /* Yeni ikonlar zaten i etiketi içinde, span'e gerek yok */
      .auth-link {
         min-width: auto;
         width: 40px;
@@ -600,10 +618,10 @@ body.no-scroll {
      }
 
     .heading-primary {
-        font-size: 1.8em;
+        font-size: 1.6em; /* Başlıkları daha da küçült */
     }
      .heading-secondary {
-        font-size: 1.4em;
+        font-size: 1.3em;
     }
     .movie-grid {
         grid-template-columns: 1fr; /* Tek sütun */
@@ -612,6 +630,9 @@ body.no-scroll {
         height: 400px;
     }
     .hero-slider-wrapper {
-         height: 45vh; /* Slider yüksekliğini daha da azalt */
+         height: 40vh; /* Slider yüksekliğini daha da azalt */
+    }
+    .slide-image {
+        object-fit: cover; /* Çok küçük ekranlarda contain yerine cover daha iyi olabilir */
     }
 }
