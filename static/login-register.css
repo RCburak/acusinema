@@ -38,7 +38,7 @@
     transition: all 0.3s ease;
     position: relative;
     font-family: inherit;
-    white-space: nowrap; /* Sekme isimlerinin alta kaymasını engelle */
+    white-space: nowrap;
 }
 
 .tab-link::after {
@@ -62,18 +62,18 @@
 }
 
 .form-section {
-    display: none; /* Varsayılan olarak formları gizle */
+    display: none;
 }
 
 .form-section.active {
-    display: block; /* Sadece aktif olanı göster */
+    display: block;
 }
 
-/* Form içindeki Django'nun otomatik p etiketleri için stiller */
+/* Form içindeki Django'nun otomatik p etiketleri */
 .form-section form p {
     margin-bottom: 20px;
-    display: flex; /* Etiket ve input'u daha iyi hizalamak için */
-    flex-direction: column; /* Varsayılan dikey */
+    display: flex;
+    flex-direction: column;
 }
 
 .form-section form label {
@@ -83,16 +83,16 @@
     font-size: 0.9em;
 }
 
-/* Şifre yardım metinleri için */
+/* Şifre yardım metinleri */
 .form-section form .helptext {
      font-size: 0.8em;
      color: var(--color-text-subtle);
      margin-top: 5px;
-     margin-bottom: 10px; /* Input ile arasında boşluk bırak */
-     display: block; /* Blok element yap */
+     margin-bottom: 10px;
+     display: block;
 }
 .form-section form ul.helptext {
-    padding-left: 20px; /* Madde işaretleri için iç boşluk */
+    padding-left: 20px;
     margin-top: 8px;
     margin-bottom: 15px;
 }
@@ -118,6 +118,22 @@
     box-shadow: 0 0 10px rgba(255, 87, 34, 0.3);
 }
 
+/* Hata listesi (form validation) */
+.form-section ul.errorlist {
+    list-style-type: none;
+    padding: 10px 15px;
+    margin: -10px 0 15px 0; /* Üstteki boşluğu azaltır */
+    color: #FF5722; /* Hata rengi */
+    font-size: 0.9em;
+    text-align: left;
+    background-color: rgba(255, 87, 34, 0.1);
+    border: 1px solid #FF5722;
+    border-radius: 6px;
+}
+.form-section ul.errorlist li {
+    padding: 2px 0;
+}
+
 .form-submit-btn {
     width: 100%;
     background: linear-gradient(45deg, #FF7B4C, var(--color-primary));
@@ -140,14 +156,14 @@
 /* --- Mobil Optimizasyon --- */
 @media (max-width: 600px) {
     .account-container {
-        padding: 20px 10px; /* Kenar boşluklarını azalt */
+        padding: 20px 10px;
     }
     .form-wrapper {
-         padding: 25px; /* İç boşluğu azalt */
+         padding: 25px;
     }
     .tab-link {
-        font-size: 1em; /* Sekme yazı boyutunu küçült */
-        padding: 12px 5px; /* Sekme boşluklarını azalt */
+        font-size: 1em;
+        padding: 12px 5px;
     }
     .form-section form input {
          padding: 12px;
