@@ -672,7 +672,7 @@ body.no-scroll {
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
     border: 1px solid #333;
-    z-index: 110;
+    z-index: 1000;
     overflow: hidden;
     padding: 5px 0; /* Üst ve altta küçük boşluk */
 }
