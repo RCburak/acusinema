@@ -43,7 +43,7 @@ class SiteSettings(models.Model):
     email1 = models.EmailField("Email Address 1", blank=True, null=True)
     email2 = models.EmailField("Email Address 2", blank=True, null=True)
     instagram_url = models.URLField("Instagram URL", blank=True, null=True)
-    map_iframe_src = models.URLField("Google Maps Embed (iframe src) Link", blank=True, null=True)
+    map_iframe_src = models.URLField("Google Maps Embed (iframe src) Link", max_length=500, blank=True, null=True)
     class Meta:
         verbose_name = "Site Setting"
         verbose_name_plural = "Site Settings"
@@ -74,3 +74,4 @@ class SliderImage(models.Model):
         ordering = ['order']
     def __str__(self):
         return self.title
+    

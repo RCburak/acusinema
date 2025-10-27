@@ -4,59 +4,55 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-    <section class="hero-slider-wrapper">
-        <div class="slider-container">
-            <div class="slider-track-js slider-track">
-                {% if slider_images %}
-                    {% for slide in slider_images %}
-                    <div class="slide-js slider-slide">
-                        <img src="{{ slide.image.url }}" alt="{{ slide.title }}" class="slide-image">
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="slide-js slider-slide">
-                        <img src="{% static 'images/res1.png' %}" alt="Default Slider Image" class="slide-image">
-                    </div>
-                {% endif %}
-            </div>
-            <button class="slider-control slider-control--prev prev-button">&#10094;</button>
-            <button class="slider-control slider-control--next next-button">&#10095;</button>
-        </div>
-    </section>
+    <section class="hero-slider-wrapper">
+        <div class="slider-container">
+            <div class="slider-track-js slider-track">
+                {% if slider_images %}
+                    {% for slide in slider_images %}
+                    <div class="slide-js slider-slide">
+                        <img src="{{ slide.image.url }}" alt="{{ slide.title }}" class="slide-image">
+                    </div>
+                    {% endfor %}
+                                {% endif %}
+            </div>
+            <button class="slider-control slider-control--prev prev-button">&#10094;</button>
+            <button class="slider-control slider-control--next next-button">&#10095;</button>
+        </div>
+    </section>
 
-    <main class="main-content-wrapper">
-        <section class="section section--welcome">
-            <h1 class="heading-primary">The Meeting Point for Cinema Lovers</h1>
-            <p class="text-lead">
-                As the Acusinema Club, we bring you a wide selection from the latest releases to cult classics. Draw the curtain and step into the magical world.
-            </p>
-        </section>
-        <hr class="divider">
-        <section class="section section--popular">
-            <h2 class="heading-secondary">Now Showing</h2>
-            <div class="movie-grid">
-                {% if homepage_movies %}
-                    {% for movie in homepage_movies %}
-                    <article class="movie-card">
-                        <figure class="movie-card__figure">
-                            <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="movie-card__image">
-                            <figcaption class="movie-card__rating">{{ movie.rating }}</figcaption>
-                        </figure>
-                        <div class="movie-card__content">
-                            <h3 class="movie-card__title">{{ movie.title }}</h3>
-                            <p class="movie-card__meta">{{ movie.genre }} | {{ movie.duration }} min</p>
-                            <button class="movie-card__button">Make a Reservation</button>
-                        </div>
-                    </article>
-                    {% endfor %}
-                {% else %}
-                    <p>There are currently no movies showing.</p>
-                {% endif %}
-            </div>
-        </section>
-    </main>
+    <main class="main-content-wrapper">
+        <section class="section section--welcome">
+            <h1 class="heading-primary">The Meeting Point for Cinema Lovers</h1>
+            <p class="text-lead">
+                As the Acusinema Club, we bring you a wide selection from the latest releases to cult classics. Draw the curtain and step into the magical world.
+            </p>
+        </section>
+        <hr class="divider">
+        <section class="section section--popular">
+            <h2 class="heading-secondary">Now Showing</h2>
+            <div class="movie-grid">
+                {% if homepage_movies %}
+                    {% for movie in homepage_movies %}
+                    <article class="movie-card">
+                        <figure class="movie-card__figure">
+                            <img src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster" class="movie-card__image">
+                            <figcaption class="movie-card__rating">{{ movie.rating }}</figcaption>
+                      _ </figure>
+                        <div class="movie-card__content">
+                            <h3 class="movie-card__title">{{ movie.title }}</h3>
+                            <p class="movie-card__meta">{{ movie.genre }} | {{ movie.duration }} min</p>
+                            <button class="movie-card__button">Make a Reservation</button>
+                        </div>
+                    </article>
+                    {% endfor %}
+                {% else %}
+                    <p>There are currently no movies showing.</p>
+                {% endif %}
+            </div>
+        </section>
+    </main>
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'slider.js' %}"></script>
+    <script src="{% static 'slider.js' %}"></script>
 {% endblock %}

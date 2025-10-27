@@ -3,7 +3,6 @@
 from django.contrib import admin
 from django.urls import path
 from core import views as core_views
-
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -19,6 +18,7 @@ urlpatterns = [
     # User Action URLs
     path('account/', core_views.account_page, name='account'),
     path('logout/', core_views.logout_view, name='logout'),
+    path('verify-email/<int:user_id>/', core_views.verify_email, name='verify-email'),
 ]
 
 # To serve media files in development

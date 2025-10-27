@@ -1,13 +1,14 @@
-# core/views.py
-
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage
-from .forms import ContactForm
+from .forms import ContactForm, CustomUserCreationForm, CustomAuthenticationForm
+from users.models import CustomUser
+from django.core.mail import send_mail
+from django.urls import reverse
+from django.conf import settings # <-- 1. DEĞİŞİKLİK (EKLENDİ)
 
 def homepage(request):
     movies_on_homepage = Acusinema.objects.order_by('-created_at')[:3]
@@ -59,26 +60,91 @@ def contact_page(request):
     return render(request, 'contact.html', context)
 
 def account_page(request):
-    login_form = AuthenticationForm()
-    register_form = UserCreationForm()
+    login_form = CustomAuthenticationForm()
+    register_form = CustomUserCreationForm()
+    active_tab = 'login'
+
     if request.method == 'POST':
         if 'login_submit' in request.POST:
-            login_form = AuthenticationForm(request, data=request.POST)
+            login_form = CustomAuthenticationForm(request, data=request.POST)
             if login_form.is_valid():
                 user = login_form.get_user()
-                login(request, user)
-                return redirect('homepage')
+                if user.is_active and user.is_email_verified:
+                    login(request, user)
+                    return redirect('homepage')
+                else:
+                    messages.error(request, 'Your account is inactive or your email address is not verified. Please enter the verification code sent to your email.')
+                    return redirect('verify-email', user_id=user.pk)
+            else:
+                active_tab = 'login'
+
         elif 'register_submit' in request.POST:
-            register_form = UserCreationForm(request.POST)
+            submitted_email = request.POST.get('email')
+            if submitted_email:
+                try:
+                    existing_unverified_user = CustomUser.objects.get(
+                        email=submitted_email,
+                        is_active=False,
+                        is_email_verified=False
+                    )
+                    existing_unverified_user.delete()
+                    print(f"Deleted old unverified record for: {submitted_email}")
+                except CustomUser.DoesNotExist:
+                    pass
+
+            register_form = CustomUserCreationForm(request.POST)
+            active_tab = 'register'
+
             if register_form.is_valid():
-                register_form.save()
-                messages.success(request, 'Your account has been created successfully! You can now log in.')
-                return redirect('account')
+                user = register_form.save(commit=False)
+                user.is_active = False
+                user.save()
+
+                user.generate_verification_code()
+
+                verification_url = request.build_absolute_uri(
+                    reverse('verify-email', kwargs={'user_id': user.pk})
+                )
+
+                subject = 'Acusinema Account Verification'
+                message = (
+                    f'Hello {user.first_name},\n\n'
+                    f'Please use the following code to verify your account:\n\n'
+                    f'Your Verification Code: {user.verification_code}\n\n'
+                    f'You can click this link to enter the code: {verification_url}\n\n'
+                    'Thanks,\nThe Acusinema Team'
+                )
+
+                # 2. DEĞİŞİKLİK (DÜZENLENDİ)
+                # E-postayı, ayarlarınızdaki doğrulanmış adresten gönderir
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+
+                messages.success(request, 'Your account has been created! Please activate your account by entering the verification code sent to your email address.')
+                return redirect('verify-email', user_id=user.pk)
+
     context = {
         'login_form': login_form,
-        'register_form': register_form
+        'register_form': register_form,
+        'active_tab': active_tab
     }
     return render(request, 'account.html', context)
+
+
+def verify_email(request, user_id):
+    user = get_object_or_404(CustomUser, pk=user_id)
+    if request.method == 'POST':
+        code = request.POST.get('verification_code')
+        if code == user.verification_code:
+            user.is_active = True
+            user.is_email_verified = True
+            user.verification_code = None
+            user.save()
+            login(request, user)
+            messages.success(request, 'Your email address has been successfully verified. Welcome!')
+            return redirect('homepage')
+        else:
+            messages.error(request, 'Invalid verification code.')
+    return render(request, 'verify_email.html', {'user': user})
 
 def logout_view(request):
     logout(request)
