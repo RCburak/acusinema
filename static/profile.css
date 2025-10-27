@@ -1,0 +1,74 @@
+/* static/profile.css */
+
+.section--profile {
+    max-width: 800px; /* İçeriği ortalamak için maksimum genişlik */
+    margin: 0 auto; /* Otomatik ortala */
+    padding-top: var(--spacing-medium);
+}
+
+.profile-details-card {
+    background-color: var(--color-bg-card);
+    padding: var(--spacing-medium);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    margin-top: var(--spacing-medium);
+}
+
+.profile-details-card .heading-secondary {
+    margin-bottom: var(--spacing-medium);
+    padding-left: 0; /* Ana CSS'deki padding'i sıfırla */
+    border-left: none; /* Ana CSS'deki border'ı sıfırla */
+    text-align: center;
+    font-size: 1.8em;
+}
+
+.profile-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* İki sütunlu yapı */
+    gap: 20px 30px; /* Satır ve sütun aralığı */
+    margin-bottom: var(--spacing-medium);
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column; /* Etiket ve değeri alt alta */
+    gap: 5px;
+}
+
+.info-item--full {
+    grid-column: 1 / -1; /* Tam genişlik kaplasın */
+}
+
+.info-label {
+    font-size: 0.9em;
+    color: var(--color-text-subtle);
+    font-weight: 500;
+}
+
+.info-value {
+    font-size: 1.1em;
+    color: var(--color-text-light);
+    word-break: break-word; /* Uzun e-postalar için */
+}
+
+.profile-actions {
+    margin-top: var(--spacing-large);
+    display: flex;
+    justify-content: center; /* Butonları ortala */
+    gap: 20px;
+    flex-wrap: wrap; /* Mobil için */
+}
+
+/* Mobil Uyum */
+@media (max-width: 600px) {
+    .profile-info-grid {
+        grid-template-columns: 1fr; /* Mobilde tek sütun */
+        gap: 15px;
+    }
+    .profile-details-card .heading-secondary {
+        font-size: 1.5em;
+    }
+    .info-value {
+        font-size: 1em;
+    }
+}

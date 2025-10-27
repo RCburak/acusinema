@@ -35,12 +35,23 @@
                 </ul>
             </nav>
         </div>
+        
         <div class="header-auth">
             {% if user.is_authenticated %}
-                <span class="user-greeting">Welcome, {{ user.username }}</span>
-                <a href="{% url 'logout' %}" class="auth-link logout-btn">
-                    <i class="icon-logout"></i> Logout
-                </a>
+                <div class="user-menu-container">
+                    <button class="auth-link login-btn user-menu-toggle">
+                        <i class="icon-login"></i>
+                        <span>Welcome, {{ user.first_name|default:user.email }}</span>
+                        <span class="dropdown-arrow">&#9662;</span> </button>
+                    
+                    <div class="user-menu-dropdown">
+                        {# <a href="{% url 'account' %}" class="dropdown-link">My Profile</a> #} <a href="{% url 'profile' %}" class="dropdown-link">My Profile</a> <a href="#" class="dropdown-link">My Reservations</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'logout' %}" class="dropdown-link dropdown-link--logout">
+                            <i class="icon-logout"></i> Log out
+                        </a>
+                    </div>
+                </div>
             {% else %}
                 <a href="{% url 'account' %}" class="auth-link login-btn">
                     <i class="icon-login"></i> Login
@@ -57,6 +68,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- Mobile Menu Toggle Script ---
             const menuToggle = document.querySelector('.mobile-menu-toggle');
             const mainNav = document.getElementById('main-navigation');
 
@@ -65,10 +77,34 @@
                     const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
                     menuToggle.setAttribute('aria-expanded', !isExpanded);
                     mainNav.classList.toggle('main-nav--open');
-                    // İsteğe bağlı: Body'e class ekleyerek scroll'u engelleme
                     document.body.classList.toggle('no-scroll');
                 });
             }
+
+            // --- NEW: USER DROPDOWN MENU TOGGLE SCRIPT ---
+            const userMenuButton = document.querySelector('.user-menu-toggle');
+            const userMenuContainer = document.querySelector('.user-menu-container');
+
+            if (userMenuButton && userMenuContainer) {
+                userMenuButton.addEventListener('click', (event) => {
+                    // Prevent click from immediately closing menu via document listener
+                    event.stopPropagation();
+                    // Toggle the 'dropdown-open' class on the container
+                    userMenuContainer.classList.toggle('dropdown-open');
+                });
+
+                // --- Optional: Close menu when clicking outside ---
+                document.addEventListener('click', (event) => {
+                    // If the click is NOT inside the menu container
+                    // AND the menu container currently has the 'dropdown-open' class
+                    if (!userMenuContainer.contains(event.target) && userMenuContainer.classList.contains('dropdown-open')) {
+                        // Remove the class to close the menu
+                        userMenuContainer.classList.remove('dropdown-open');
+                    }
+                });
+                // --- End click outside ---
+            }
+            // --- END USER MENU SCRIPT ---
         });
     </script>
 </body>
