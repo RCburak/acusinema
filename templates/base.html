@@ -21,7 +21,12 @@
                     <span class="brand-title">ACUSINEMA</span>
                 </div>
             </a>
-            <nav class="main-nav">
+            <button class="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="main-nav" id="main-navigation">
                 <ul class="nav-list">
                     <li class="nav-item"><a href="{% url 'homepage' %}" class="nav-link {% if request.resolver_match.url_name == 'homepage' %}nav-link--active{% endif %}">Homepage</a></li>
                     <li class="nav-item"><a href="{% url 'movies' %}" class="nav-link {% if request.resolver_match.url_name == 'movies' %}nav-link--active{% endif %}">Movies</a></li>
@@ -47,6 +52,24 @@
     <footer class="site-footer">
         <p>© {% now "Y" %} Acusinema Club. All Rights Reserved.</p>
     </footer>
+
     {% block extra_js %}{% endblock %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            const mainNav = document.getElementById('main-navigation');
+
+            if (menuToggle && mainNav) {
+                menuToggle.addEventListener('click', () => {
+                    const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                    menuToggle.setAttribute('aria-expanded', !isExpanded);
+                    mainNav.classList.toggle('main-nav--open');
+                    // İsteğe bağlı: Body'e class ekleyerek scroll'u engelleme
+                    document.body.classList.toggle('no-scroll');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
