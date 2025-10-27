@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block extra_css %}
+    {# Profil sayfasına özel CSS dosyasını yükle #}
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="main-content-wrapper">
+    <section class="section section--profile">
+        <h1 class="heading-primary">My Profile</h1>
+        <hr class="divider">
+
+        <div class="profile-details-card">
+            <h2 class="heading-secondary">Account Information</h2>
+            <div class="profile-info-grid">
+                <div class="info-item">
+                    <span class="info-label">First Name:</span>
+                    <span class="info-value">{{ user_profile.first_name|default:"-" }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Last Name:</span>
+                    <span class="info-value">{{ user_profile.last_name|default:"-" }}</span>
+                </div>
+                <div class="info-item info-item--full">
+                    <span class="info-label">Email Address:</span>
+                    <span class="info-value">{{ user_profile.email }}</span>
+                </div>
+                <div class="info-item info-item--full">
+                    <span class="info-label">Date Joined:</span>
+                    {# Tarihi daha okunabilir formatta gösterelim #}
+                    <span class="info-value">{{ user_profile.date_joined|date:"F j, Y, P" }}</span>
+                </div>
+            </div>
+
+            {# İleride eklenebilecek butonlar için yer #}
+            <div class="profile-actions">
+                {# <a href="#" class="auth-link logout-btn" style="min-width: 150px;">Edit Profile</a> #}
+                {# <a href="#" class="auth-link login-btn" style="min-width: 150px;">Change Password</a> #}
+            </div>
+        </div>
+
+    </section>
+</main>
+{% endblock %}
