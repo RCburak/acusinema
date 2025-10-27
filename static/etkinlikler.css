@@ -13,8 +13,8 @@
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s, box-shadow 0.3s;
-    border-left: 5px solid transparent; /* Hover efekti için başlangıç */
+    transition: transform 0.3s, box-shadow 0.3s, border-left-color 0.3s;
+    border-left: 5px solid transparent;
 }
 
 .event-card:hover {
@@ -34,9 +34,10 @@
     padding: 15px;
     text-align: center;
     font-weight: 700;
-    min-width: 70px; /* Sabit genişlik */
+    min-width: 70px;
     height: 70px;
-    align-self: flex-start; /* Kendini yukarı hizalar */
+    flex-shrink: 0;
+    align-self: flex-start;
 }
 
 .event-date .day {
@@ -50,18 +51,21 @@
 }
 
 .event-content {
-    flex-grow: 1; /* Kalan tüm alanı kapla */
+    flex-grow: 1;
+    min-width: 0; /* İçeriğin taşmasını engellemek için */
 }
 
 .event-title {
     margin: 0 0 10px 0;
     font-size: 1.5em;
     color: var(--color-text-light);
+    word-break: break-word;
 }
 
 .event-meta {
     display: flex;
-    gap: 25px;
+    flex-wrap: wrap;
+    gap: 15px 25px;
     color: var(--color-text-subtle);
     margin-bottom: 15px;
     font-size: 0.9em;
@@ -71,18 +75,14 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    white-space: nowrap;
 }
 
 .event-description {
     margin: 0;
     color: var(--color-text-subtle);
     line-height: 1.7;
-}
-
-.event-action {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    word-break: break-word;
 }
 
 /* Geçmiş etkinlikler için stil */
@@ -90,39 +90,41 @@
     opacity: 0.65;
 }
 .past-events .event-card:hover {
-    opacity: 1; /* Üzerine gelince netleşir */
+    opacity: 1;
 }
 .past-events .event-date {
-    background-color: #444; /* Tarih kutusu rengi gri */
+    background-color: #444;
 }
 
-/* Sona ermiş etkinlik butonu */
-.btn-secondary {
-    background-color: #333;
-    color: var(--color-text-subtle);
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-weight: 600;
-    text-align: center;
-    cursor: default;
-}
-
-/* Küçük ikonlar için (opsiyonel, font-awesome gibi bir kütüphane kullanmıyorsanız) */
-.icon-time::before { content: '🕒'; margin-right: 2px; }
-.icon-location::before { content: '📍'; margin-right: 2px; }
+/* Küçük ikonlar */
+.icon-time::before { content: '🕒'; margin-right: 4px; display: inline-block; }
+.icon-location::before { content: '📍'; margin-right: 4px; display: inline-block; }
 
 
-/* Küçük ekranlar için */
+/* --- Mobil Optimizasyon --- */
 @media (max-width: 600px) {
     .event-card {
         flex-direction: column;
         gap: 20px;
+        padding: 20px;
     }
     .event-date {
         align-self: flex-start;
+        padding: 10px;
+        min-width: 60px;
+        height: 60px;
     }
-    .event-action {
-        justify-content: flex-start;
-        margin-top: 15px;
+     .event-date .day {
+        font-size: 1.6em;
+    }
+    .event-date .month {
+        font-size: 0.8em;
+    }
+    .event-title {
+        font-size: 1.3em;
+    }
+    .event-meta {
+         gap: 10px 20px;
+         font-size: 0.85em;
     }
 }

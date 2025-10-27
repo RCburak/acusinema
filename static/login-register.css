@@ -38,6 +38,7 @@
     transition: all 0.3s ease;
     position: relative;
     font-family: inherit;
+    white-space: nowrap;
 }
 
 .tab-link::after {
@@ -61,15 +62,18 @@
 }
 
 .form-section {
-    display: none; /* Varsayılan olarak formları gizle */
+    display: none;
 }
 
 .form-section.active {
-    display: block; /* Sadece aktif olanı göster */
+    display: block;
 }
 
+/* Form içindeki Django'nun otomatik p etiketleri */
 .form-section form p {
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-section form label {
@@ -77,6 +81,23 @@
     margin-bottom: 8px;
     color: var(--color-text-subtle);
     font-size: 0.9em;
+}
+
+/* Şifre yardım metinleri */
+.form-section form .helptext {
+     font-size: 0.8em;
+     color: var(--color-text-subtle);
+     margin-top: 5px;
+     margin-bottom: 10px;
+     display: block;
+}
+.form-section form ul.helptext {
+    padding-left: 20px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+.form-section form ul.helptext li {
+     margin-bottom: 5px;
 }
 
 .form-section form input {
@@ -95,6 +116,22 @@
     border-color: var(--color-primary);
     outline: none;
     box-shadow: 0 0 10px rgba(255, 87, 34, 0.3);
+}
+
+/* Hata listesi (form validation) */
+.form-section ul.errorlist {
+    list-style-type: none;
+    padding: 10px 15px;
+    margin: -10px 0 15px 0; /* Üstteki boşluğu azaltır */
+    color: #FF5722; /* Hata rengi */
+    font-size: 0.9em;
+    text-align: left;
+    background-color: rgba(255, 87, 34, 0.1);
+    border: 1px solid #FF5722;
+    border-radius: 6px;
+}
+.form-section ul.errorlist li {
+    padding: 2px 0;
 }
 
 .form-submit-btn {
@@ -116,13 +153,24 @@
     box-shadow: 0 8px 20px rgba(255, 87, 34, 0.4);
 }
 
-.form-footer-link {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 0.9em;
-}
-.form-footer-link a {
-    color: var(--color-secondary);
-    text-decoration: none;
-    font-weight: 600;
+/* --- Mobil Optimizasyon --- */
+@media (max-width: 600px) {
+    .account-container {
+        padding: 20px 10px;
+    }
+    .form-wrapper {
+         padding: 25px;
+    }
+    .tab-link {
+        font-size: 1em;
+        padding: 12px 5px;
+    }
+    .form-section form input {
+         padding: 12px;
+         font-size: 0.95em;
+    }
+    .form-submit-btn {
+         padding: 12px;
+         font-size: 1em;
+    }
 }
