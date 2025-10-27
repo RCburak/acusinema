@@ -60,8 +60,13 @@
             <div id="login-form-wrapper" class="form-section">
                 <form id="login-form" method="POST">
                     {% csrf_token %}
-                    {{ login_form.as_p }} {# Form field labels come from forms.py in English #}
-                    {# Changed button text to English #}
+                    {{ login_form.as_p }}
+                    
+                    <div style="text-align: right; margin-top: -10px; margin-bottom: 20px;">
+                        <a href="{% url 'password_reset' %}" style="color: var(--color-primary); font-size: 0.9em; text-decoration: none;">
+                            Forgot Password?
+                        </a>
+                    </div>
                     <button type="submit" name="login_submit" class="form-submit-btn">Login</button>
                 </form>
             </div>
