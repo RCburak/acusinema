@@ -23,7 +23,6 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-/* Scroll engelleme için body class'ı */
 body.no-scroll {
     overflow: hidden;
 }
@@ -34,7 +33,6 @@ body.no-scroll {
     border-radius: 4px;
 }
 
-
 /* ==================== HEADER VE NAVİGASYON ==================== */
 .site-header {
     background-color: var(--color-bg-card);
@@ -44,8 +42,8 @@ body.no-scroll {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 1px 15px rgba(0, 0, 0, 0.7);
-    position: relative; /* Mobil menü için */
-    z-index: 100; /* Mobil menünün üstte kalması için */
+    position: relative;
+    z-index: 100;
 }
 
 .brand-link {
@@ -56,13 +54,13 @@ body.no-scroll {
     display: flex;
     align-items: center;
     gap: 40px;
-    flex-grow: 1; /* Ana bölümün esnemesi için */
+    flex-grow: 1;
 }
 .header-brand {
     display: flex;
     align-items: center;
     gap: 15px;
-    flex-shrink: 0; /* Logo ve başlığın küçülmemesi için */
+    flex-shrink: 0;
 }
 .brand-logo {
     height: 45px;
@@ -74,17 +72,17 @@ body.no-scroll {
     color: var(--color-text-light);
     text-transform: uppercase;
     letter-spacing: 1px;
-    white-space: nowrap; /* Başlığın alta kaymaması için */
+    white-space: nowrap;
 }
 .main-nav {
-    flex-grow: 1; /* Navigasyonun kalan alanı doldurması için */
+    flex-grow: 1;
 }
 .nav-list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: flex-start; /* Linkleri sola yasla */
+    justify-content: flex-start;
 }
 .nav-link {
     color: var(--color-text-subtle);
@@ -118,13 +116,13 @@ body.no-scroll {
 
 /* --- Mobil Menü Butonu --- */
 .mobile-menu-toggle {
-    display: none; /* Varsayılan olarak gizli */
+    display: none;
     background: none;
     border: none;
     padding: 10px;
     cursor: pointer;
-    z-index: 110; /* Navigasyonun üzerinde olmalı */
-    margin-left: auto; /* Sağa yaslamak için */
+    z-index: 110;
+    margin-left: auto;
 }
 .mobile-menu-toggle span {
     display: block;
@@ -135,13 +133,12 @@ body.no-scroll {
     transition: all 0.3s ease-in-out;
 }
 
-
 /* ==================== GİRİŞ/ÇIKIŞ BUTONLARI ==================== */
 .header-auth {
     display: flex;
     align-items: center;
     gap: 20px;
-    flex-shrink: 0; /* Butonların küçülmemesi için */
+    flex-shrink: 0;
 }
 .user-greeting {
     color: var(--color-text-subtle);
@@ -223,7 +220,7 @@ body.no-scroll {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 70vh; /* Yüksekliği biraz azalttım, isteğe bağlı */
+    height: 70vh;
     background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
 }
@@ -239,23 +236,24 @@ body.no-scroll {
 }
 .slider-track {
     display: flex;
-    /* width değeri JS tarafından ayarlanacak */
     height: 100%;
     transition: transform 1.0s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     transform: translate3d(0, 0, 0);
     will-change: transform;
     backface-visibility: hidden;
+    /* width değeri JS tarafından ayarlanacak */
 }
 .slider-slide {
-    /* width değeri JS tarafından ayarlanacak */
     flex-shrink: 0;
     height: 100%;
     transform: translate3d(0, 0, 0);
+    /* width değeri JS tarafından ayarlanacak */
 }
 .slide-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Resmin taşmasını engeller ve kaplar */
+    object-position: center; /* Resmi ortalar */
     display: block;
 }
 
@@ -427,13 +425,13 @@ body.no-scroll {
 /* Orta Boy Ekranlar ve Tabletler (Örn: 992px altı) */
 @media (max-width: 992px) {
     .header-main {
-        gap: 20px; /* Header içindeki boşlukları azalt */
+        gap: 20px;
     }
     .nav-link {
-        padding: 10px 12px; /* Navigasyon link boşluklarını azalt */
+        padding: 10px 12px;
     }
     .brand-title {
-        font-size: 1.5em; /* Marka başlığını biraz küçült */
+        font-size: 1.5em;
     }
 }
 
@@ -441,31 +439,42 @@ body.no-scroll {
 /* Küçük Tabletler ve Büyük Telefonlar (Örn: 768px altı) */
 @media (max-width: 768px) {
     .site-header {
-        padding: 10px 4vw; /* Header padding azalt */
-        flex-wrap: wrap; /* Gerekirse alta kaydır */
+        padding: 10px 4vw;
+        flex-wrap: wrap; /* Header içeriğini sığmazsa alt satıra at */
+        justify-content: space-between; /* Logo sola, diğerleri sağa */
     }
     .header-main {
-        width: 100%; /* Mobil menü butonu için */
-        justify-content: space-between; /* Logo sola, buton sağa */
-        order: 1; /* Önce logo ve menü ikonu */
-        padding-bottom: 5px; /* Alt boşluk */
+        order: 1; /* Logo ve hamburger ikonunu ilk sıraya al */
+        width: auto; /* Otomatik genişlik */
+        flex-grow: 0; /* Büyümesini engelle */
     }
+    .header-auth {
+        order: 2; /* Login/Logout butonlarını ortaya al */
+        margin-left: auto; /* Hamburger ikonuna yer açmak için */
+        gap: 10px;
+    }
+     .mobile-menu-toggle {
+        display: block; /* Hamburger ikonu göster */
+        order: 3; /* En sağa al */
+        margin-left: 10px; /* Auth butonlarından ayır */
+    }
+
     .main-nav {
-        /* Mobil menü görünümü */
-        display: none; /* Varsayılan olarak gizle */
+        display: none;
         position: absolute;
-        top: 100%; /* Header'ın hemen altına */
+        top: 100%;
         left: 0;
         width: 100%;
         background-color: var(--color-bg-card);
         border-top: 1px solid #333;
         box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        order: 4; /* En alta al */
     }
     .main-nav--open {
-        display: block; /* JavaScript ile açıldığında göster */
+        display: block;
     }
     .nav-list {
-        flex-direction: column; /* Linkleri dikey sırala */
+        flex-direction: column;
         padding: 10px 0;
     }
     .nav-item {
@@ -476,18 +485,14 @@ body.no-scroll {
         border-bottom: none;
     }
     .nav-link {
-        padding: 15px; /* Mobil linklere daha fazla tıklama alanı */
-        color: var(--color-text-light); /* Mobil menüde linkler daha belirgin */
+        padding: 15px;
+        color: var(--color-text-light);
     }
     .nav-link--active::after {
-        display: none; /* Aktif link alt çizgisini mobilde kaldır */
+        display: none;
     }
 
-    .mobile-menu-toggle {
-        display: block; /* Hamburger ikonu göster */
-        order: 3; /* Sağ tarafta kalması için */
-    }
-    /* Hamburger ikon animasyonu (açıkken X olur) */
+    /* Hamburger ikon animasyonu */
     .mobile-menu-toggle[aria-expanded="true"] span:nth-child(1) {
         transform: rotate(45deg) translate(5px, 5px);
     }
@@ -498,13 +503,8 @@ body.no-scroll {
         transform: rotate(-45deg) translate(7px, -6px);
     }
 
-    .header-auth {
-        order: 2; /* İkonun solunda kalması için */
-        margin-left: auto; /* Mümkün olduğunca sağa iter */
-        gap: 10px;
-    }
     .user-greeting {
-        display: none; /* Küçük ekranda karşılama yazısını gizle */
+        display: none;
     }
     .auth-link {
         padding: 8px 15px;
@@ -512,17 +512,17 @@ body.no-scroll {
         min-width: auto;
     }
     .icon-login, .icon-logout {
-        width: 18px; height: 18px; /* İkonları küçült */
+        width: 18px; height: 18px;
     }
 
     /* Slider Mobil */
     .hero-slider-wrapper {
-        height: 55vh; /* Yüksekliği küçült */
+        height: 55vh;
         padding: 10px;
     }
     .slider-container {
-        width: 100%; /* Tam genişlik */
-        border-radius: 8px; /* Köşeleri biraz daha az yuvarla */
+        width: 100%;
+        border-radius: 8px;
     }
     .slider-control {
         padding: 10px 15px;
@@ -535,7 +535,7 @@ body.no-scroll {
 
     /* Genel İçerik Mobil */
     body {
-        font-size: 15px; /* Temel font boyutunu ayarla */
+        font-size: 15px;
     }
      .main-content-wrapper {
         padding: 0 15px var(--spacing-medium) 15px;
@@ -558,11 +558,11 @@ body.no-scroll {
 
     /* Film Kartları Mobil */
     .movie-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Daha küçük minimum genişlik */
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 20px;
     }
     .movie-card__figure {
-        height: 350px; /* Kart resim yüksekliğini azalt */
+        height: 350px;
     }
     .movie-card__content {
         padding: 15px;
@@ -575,26 +575,28 @@ body.no-scroll {
 /* Sadece Çok Küçük Ekranlar (Örn: 480px altı) */
 @media (max-width: 480px) {
     .brand-title {
-        font-size: 1.3em; /* Marka başlığını daha da küçült */
+        font-size: 1.3em;
     }
     .brand-logo {
-        height: 35px; /* Logoyu küçült */
+        height: 35px;
     }
     /* Giriş/Çıkış butonlarını sadece ikon olarak göster */
-    .auth-link .icon-login + span, /* Sadece metin içeren span'i seçer */
-    .auth-link .icon-logout + span { /* Sadece metin içeren span'i seçer */
+    .auth-link span, /* İkon dışındaki span'ları gizle */
+    .auth-link .icon-login + span, /* Eski ikon span'ini de gizle */
+    .auth-link .icon-logout + span { /* Eski ikon span'ini de gizle */
          display: none;
     }
+    /* Yeni ikonlar zaten i etiketi içinde, span'e gerek yok */
      .auth-link {
         min-width: auto;
-        width: 40px; /* İkon için sabit genişlik */
-        height: 40px; /* İkon için sabit yükseklik */
-        padding: 0; /* İç boşluğu sıfırla */
-        justify-content: center; /* İkonu ortala */
-        border-radius: 50%; /* Tam yuvarlak yap */
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 50%;
      }
      .icon-login, .icon-logout {
-        margin: 0; /* İkonun içindeki boşluğu kaldır */
+        margin: 0;
      }
 
     .heading-primary {
@@ -607,6 +609,9 @@ body.no-scroll {
         grid-template-columns: 1fr; /* Tek sütun */
     }
      .movie-card__figure {
-        height: 400px; /* Tek sütunda resim yüksekliğini biraz artır */
+        height: 400px;
+    }
+    .hero-slider-wrapper {
+         height: 45vh; /* Slider yüksekliğini daha da azalt */
     }
 }
