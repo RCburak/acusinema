@@ -38,6 +38,7 @@
     transition: all 0.3s ease;
     position: relative;
     font-family: inherit;
+    white-space: nowrap; /* Sekme isimlerinin alta kaymasını engelle */
 }
 
 .tab-link::after {
@@ -68,8 +69,11 @@
     display: block; /* Sadece aktif olanı göster */
 }
 
+/* Form içindeki Django'nun otomatik p etiketleri için stiller */
 .form-section form p {
     margin-bottom: 20px;
+    display: flex; /* Etiket ve input'u daha iyi hizalamak için */
+    flex-direction: column; /* Varsayılan dikey */
 }
 
 .form-section form label {
@@ -77,6 +81,23 @@
     margin-bottom: 8px;
     color: var(--color-text-subtle);
     font-size: 0.9em;
+}
+
+/* Şifre yardım metinleri için */
+.form-section form .helptext {
+     font-size: 0.8em;
+     color: var(--color-text-subtle);
+     margin-top: 5px;
+     margin-bottom: 10px; /* Input ile arasında boşluk bırak */
+     display: block; /* Blok element yap */
+}
+.form-section form ul.helptext {
+    padding-left: 20px; /* Madde işaretleri için iç boşluk */
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+.form-section form ul.helptext li {
+     margin-bottom: 5px;
 }
 
 .form-section form input {
@@ -116,13 +137,24 @@
     box-shadow: 0 8px 20px rgba(255, 87, 34, 0.4);
 }
 
-.form-footer-link {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 0.9em;
-}
-.form-footer-link a {
-    color: var(--color-secondary);
-    text-decoration: none;
-    font-weight: 600;
+/* --- Mobil Optimizasyon --- */
+@media (max-width: 600px) {
+    .account-container {
+        padding: 20px 10px; /* Kenar boşluklarını azalt */
+    }
+    .form-wrapper {
+         padding: 25px; /* İç boşluğu azalt */
+    }
+    .tab-link {
+        font-size: 1em; /* Sekme yazı boyutunu küçült */
+        padding: 12px 5px; /* Sekme boşluklarını azalt */
+    }
+    .form-section form input {
+         padding: 12px;
+         font-size: 0.95em;
+    }
+    .form-submit-btn {
+         padding: 12px;
+         font-size: 1em;
+    }
 }

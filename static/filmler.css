@@ -9,7 +9,7 @@
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Mobil için alta kaydır */
 }
 .filter-group {
     display: flex;
@@ -19,6 +19,7 @@
 .filter-group label {
     color: var(--color-text-subtle);
     font-weight: 500;
+    white-space: nowrap; /* Etiketlerin alta kaymasını engelle */
 }
 .filter-select {
     background-color: var(--color-bg-card);
@@ -30,79 +31,70 @@
     cursor: pointer;
     transition: border-color 0.3s;
     font-family: inherit;
+    min-width: 150px; /* Seçim kutularının çok daralmasını önle */
 }
 .filter-select:focus {
     outline: none;
     border-color: var(--color-secondary);
 }
-.movie-card__button {
-    width: 100%;
-    /* Not: Butonun genel stilleri (padding, border vb.) ana CSS dosyanızdan geliyor olabilir. */
-}
 
-/* ========================================================= */
-/* YENİ EKLENEN ARAMA FORMU VE TURUNCU BUTON STİLLERİ */
-/* ========================================================= */
+/* Arama Formu Stilleri */
 .search-form {
     display: flex;
     width: 100%;
-    max-width: 600px; /* Arama çubuğunun çok genişlemesini önler */
+    max-width: 600px;
     gap: 10px;
+    flex-grow: 1; /* Arama formunun boş alanı doldurması için */
 }
 
 .search-form input.filter-select {
-    flex-grow: 1; /* Arama kutusunun esneyip boş alanı doldurması için */
-    width: auto;
+    flex-grow: 1;
+    width: auto; /* Esnek genişlik */
+    min-width: 100px; /* Minimum genişlik */
 }
 
-.search-form button.movie-card__button {
-    width: auto; /* Genişliği içeriğine göre ayarlar */
-    padding-left: 25px; /* Butona yatay boşluk verir */
-    padding-right: 25px;
-    background-color: #ff6600; /* Sitenizin ana turuncu rengi */
+.search-form button { /* Butonun genel movie-card__button sınıfına müdahale etmeden seçelim */
+    width: auto;
+    padding: 10px 25px; /* Padding güncellendi */
+    background-color: var(--color-primary); /* Turuncu renk */
     border: none;
-    color: #ffffff; /* Yazı rengini beyaz yapar */
-    font-weight: 600; /* Yazıyı kalınlaştırır */
-    flex-shrink: 0; /* Butonun daralmasını engeller */
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1em; /* Boyut filter-select ile aynı */
+    border-radius: 6px; /* Köşeleri yuvarla */
+    cursor: pointer;
+    flex-shrink: 0;
     transition: background-color 0.3s ease;
 }
 
-.search-form button.movie-card__button:hover {
-    background-color: #e65c00; /* Üzerine gelince biraz daha koyu turuncu */
+.search-form button:hover {
+    background-color: #e65c00; /* Koyu turuncu */
 }
 
 
 /* FİLM KARTI GRID (IZGARA) YAPISI */
+/* Bu stiller anasayfa.css'ten de geliyor olabilir, burada tekrar etmek yerine */
+/* ana dosyada tanımlamak daha iyi olabilir. Şimdilik burada bırakıyorum. */
 .movie-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* auto-fit kullanıldı */
     gap: 30px;
 }
 
-/* FİLM KARTI RESİM BOYUTLANDIRMA */
+/* Film Kartı Figür */
 .movie-card__figure {
     height: 450px;
     overflow: hidden;
     position: relative;
     background-color: #111;
+    margin: 0; /* Figürün varsayılan margin'ini sıfırla */
 }
 .movie-card__image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: top center;
-}
-
-/* MOBİL CİHAZLAR İÇİN UYUMLULUK */
-@media (max-width: 992px) {
-    .movie-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media (max-width: 768px) {
-    .movie-grid {
-        grid-template-columns: 1fr;
-    }
+    display: block; /* Alt boşluğu kaldır */
 }
 
 /* SAYFALAMA STİLLERİ */
@@ -110,6 +102,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap; /* Mobil için sayfa numaralarını alta kaydır */
     gap: 8px;
     margin-top: 50px;
     padding-bottom: 30px;
@@ -121,6 +114,7 @@
     border: 1px solid #333;
     border-radius: 6px;
     transition: all 0.3s ease;
+    background-color: var(--color-bg-card); /* Arka plan ekle */
 }
 .page-link:hover {
     background-color: var(--color-secondary);
@@ -137,4 +131,40 @@
     color: #444;
     pointer-events: none;
     border-color: #222;
+    background-color: #222; /* Pasif arka plan */
+}
+
+/* --- Mobil Optimizasyon --- */
+@media (max-width: 768px) {
+    .filter-bar {
+        gap: 15px; /* Mobil için boşlukları azalt */
+    }
+    .search-form {
+        flex-direction: column; /* Arama kutusu ve butonu alt alta */
+        gap: 15px;
+    }
+    .search-form button {
+        width: 100%; /* Mobil için buton tam genişlik */
+    }
+    .movie-grid {
+        gap: 20px; /* Kartlar arası boşluğu azalt */
+    }
+     .movie-card__figure {
+        height: 400px; /* Mobil için kart resim yüksekliğini ayarla */
+    }
+}
+@media (max-width: 600px) {
+     .movie-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Daha küçük kartlar için */
+    }
+     .movie-card__figure {
+        height: 300px;
+    }
+    .pagination {
+        gap: 5px; /* Sayfalama linkleri arası boşluk */
+    }
+    .page-link {
+        padding: 8px 12px; /* Linklerin boyutunu küçült */
+        font-size: 0.9em;
+    }
 }
