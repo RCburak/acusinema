@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.utils.text import slugify
+from django.conf import settings # <- Reservation modeli için eklendi
 
 class Acusinema(models.Model):
     title = models.CharField("Movie Title", max_length=200)
@@ -10,7 +11,7 @@ class Acusinema(models.Model):
     rating = models.DecimalField("Rating", max_digits=3, decimal_places=1, help_text="Enter the movie rating (e.g., 8.5).")
     poster = models.ImageField("Poster", upload_to='posters/', help_text="Upload the movie poster.")
     created_at = models.DateTimeField("Date Added", auto_now_add=True)
-    
+
     class Meta:
         verbose_name = "Acusinema Movie"
         verbose_name_plural = "Acusinema Movies"
@@ -20,7 +21,7 @@ class Acusinema(models.Model):
         return self.title
 
 class Event(models.Model):
-   
+
     title = models.CharField("Event Title", max_length=200)
     slug = models.SlugField(max_length=250, unique=True, blank=True)
     description = models.TextField("Description")
@@ -74,4 +75,31 @@ class SliderImage(models.Model):
         ordering = ['order']
     def __str__(self):
         return self.title
-    
+
+# --- YENİ EKLENEN REZERVASYON MODELİ ---
+class Reservation(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, # Kullanıcı modeline referans
+        on_delete=models.CASCADE,
+        verbose_name="User"
+    )
+    event = models.ForeignKey(
+        Event, # Event modeline referans
+        on_delete=models.CASCADE,
+        verbose_name="Event"
+    )
+    reservation_time = models.DateTimeField(
+        "Reservation Time",
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "Reservation"
+        verbose_name_plural = "Reservations"
+        ordering = ['-reservation_time']
+        unique_together = ('user', 'event') # Aynı kullanıcı aynı etkinliğe tek rezervasyon yapabilir
+
+    def __str__(self):
+        # Admin panelinde gösterilecek metin
+        return f"Reservation for {self.event.title} by {self.user.email}"
+# --- REZERVASYON MODELİ SONU ---
