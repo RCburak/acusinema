@@ -35,7 +35,7 @@
                 </ul>
             </nav>
         </div>
-        
+
         <div class="header-auth">
             {% if user.is_authenticated %}
                 <div class="user-menu-container">
@@ -43,9 +43,12 @@
                         <i class="icon-login"></i>
                         <span>Welcome, {{ user.first_name|default:user.email }}</span>
                         <span class="dropdown-arrow">&#9662;</span> </button>
-                    
+
                     <div class="user-menu-dropdown">
-                        {# <a href="{% url 'account' %}" class="dropdown-link">Profile</a> #} <a href="{% url 'profile' %}" class="dropdown-link">Profile</a> <a href="#" class="dropdown-link">Reservations</a>
+                        <a href="{% url 'profile' %}" class="dropdown-link">Profile</a>
+                        {# --- LİNK GÜNCELLENDİ --- #}
+                        <a href="{% url 'my_reservations' %}" class="dropdown-link">Reservations</a>
+                        {# --- GÜNCELLEME SONU --- #}
                         <div class="dropdown-divider"></div>
                         <a href="{% url 'logout' %}" class="dropdown-link dropdown-link--logout">
                             <i class="icon-logout"></i> Log out
@@ -81,28 +84,21 @@
                 });
             }
 
-            // --- NEW: USER DROPDOWN MENU TOGGLE SCRIPT ---
+            // --- USER DROPDOWN MENU TOGGLE SCRIPT ---
             const userMenuButton = document.querySelector('.user-menu-toggle');
             const userMenuContainer = document.querySelector('.user-menu-container');
 
             if (userMenuButton && userMenuContainer) {
                 userMenuButton.addEventListener('click', (event) => {
-                    // Prevent click from immediately closing menu via document listener
                     event.stopPropagation();
-                    // Toggle the 'dropdown-open' class on the container
                     userMenuContainer.classList.toggle('dropdown-open');
                 });
 
-                // --- Optional: Close menu when clicking outside ---
                 document.addEventListener('click', (event) => {
-                    // If the click is NOT inside the menu container
-                    // AND the menu container currently has the 'dropdown-open' class
                     if (!userMenuContainer.contains(event.target) && userMenuContainer.classList.contains('dropdown-open')) {
-                        // Remove the class to close the menu
                         userMenuContainer.classList.remove('dropdown-open');
                     }
                 });
-                // --- End click outside ---
             }
             // --- END USER MENU SCRIPT ---
         });

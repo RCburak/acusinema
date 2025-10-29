@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Reservations{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'reservations.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="main-content-wrapper">
+    <section class="section section--reservations">
+        <h1 class="heading-primary">My Reservations</h1>
+        <hr class="divider">
+
+        {# Mesajları Gösterme Bölümü (CSS Sınıfları Kullanıldı) #}
+        {% if messages %}
+            {% for message in messages %}
+                {# Mesajın etiketine göre uygun CSS sınıfını ekle #}
+                <div class="alert-message
+                    {% if message.tags == 'error' %}alert-error{% elif message.tags == 'warning' %}alert-warning{% else %}alert-success{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {# Rezervasyon Listesi (Alternatif Düzen - Aynı kalıyor) #}
+        <div class="reservations-list-alt">
+            {% if reservations %}
+                <h2 class="heading-secondary" style="margin-bottom: 20px;">Your Booked Events</h2>
+                {% for reservation in reservations %}
+                <div class="reservation-item">
+                    <div class="reservation-details">
+                        <h3 class="reservation-event-title">{{ reservation.event.title }}</h3>
+                        <p class="reservation-info">
+                            <span class="info-label">Date & Time:</span>
+                            <span class="info-value">{{ reservation.event.event_date|date:"l, F j, Y - P" }}</span>
+                        </p>
+                        <p class="reservation-info">
+                            <span class="info-label">Location:</span>
+                            <span class="info-value">{{ reservation.event.location }}</span>
+                        </p>
+                        <p class="reservation-info booked-date">
+                            <span class="info-label">Booked on:</span>
+                            <span class="info-value">{{ reservation.reservation_time|date:"M d, Y" }}</span>
+                        </p>
+                    </div>
+                    {# <div class="reservation-action"> #}
+                    {#     <button class="cancel-button-alt">Cancel</button> #}
+                    {# </div> #}
+                </div>
+                {% endfor %}
+            {% else %}
+                 <p class="text-lead" style="text-align: center; margin-top: 30px;">You have no reservations yet.</p>
+                 <p style="text-align: center;">
+                     <a href="{% url 'events' %}" class="movie-card__button" style="max-width: 250px; margin: 20px auto; text-decoration: none; display: block;">View Upcoming Events</a>
+                 </p>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock %}

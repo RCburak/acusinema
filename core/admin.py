@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage
+from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage, Reservation
 
 class AcusinemaAdmin(admin.ModelAdmin):
     list_display = ('title', 'genre', 'rating', 'created_at', 'display_poster')
@@ -40,8 +40,15 @@ class SliderImageAdmin(admin.ModelAdmin):
         return format_html('<img src="{}" width="150" />', obj.image.url)
     display_image.short_description = 'Preview'
 
+class ReservationAdmin(admin.ModelAdmin):
+    list_display = ('event', 'user', 'reservation_time') 
+    list_filter = ('event', 'reservation_time') 
+    search_fields = ('event__title', 'user__email') 
+    readonly_fields = ('reservation_time',) 
+
 admin.site.register(Acusinema, AcusinemaAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(SiteSettings, SiteSettingsAdmin)
 admin.site.register(ContactMessage, ContactMessageAdmin)
 admin.site.register(SliderImage, SliderImageAdmin)
+admin.site.register(Reservation, ReservationAdmin)

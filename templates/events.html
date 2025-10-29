@@ -18,14 +18,26 @@
                         <div class="event-content">
                             <h3 class="event-title">{{ event.title }}</h3>
                             <div class="event-meta">
-                                <span><i class="icon-time"></i>{{ event.event_date|date:"H:i" }}</span>
-                                
+                                {# Tarih formatını daha okunaklı yapalım #}
+                                <span><i class="icon-time"></i>{{ event.event_date|date:"F j, Y, P" }}</span>
                                 <span><i class="icon-location"></i>{{ event.location }}</span>
-
                             </div>
                             <p class="event-description">{{ event.description|linebreaks }}</p>
+
+                            {# --- REZERVASYON BUTONU EKLENDİ --- #}
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'create_reservation' event.id %}" class="movie-card__button" style="margin-top: 15px; text-decoration: none; display: inline-block; width: auto; padding: 10px 20px;">
+                                    Make a Reservation
+                                </a>
+                            {% else %}
+                                <p style="font-size: 0.9em; color: var(--color-text-subtle); margin-top: 15px;">
+                                    You must be <a href="{% url 'account' %}?next={{ request.path }}">logged in</a> to make a reservation.
+                                </p>
+                            {% endif %}
+                            {# --- BUTON SONU --- #}
+
                         </div>
-                        </article>
+                    </article>
                     {% endfor %}
                 {% else %}
                     <p>There are no upcoming events.</p>
@@ -44,14 +56,13 @@
                        <div class="event-content">
                             <h3 class="event-title">{{ event.title }}</h3>
                             <div class="event-meta">
-                                <span><i class="icon-time"></i>{{ event.event_date|date:"H:i" }}</span>
-
+                                {# Tarih formatını daha okunaklı yapalım #}
+                                <span><i class="icon-time"></i>{{ event.event_date|date:"F j, Y, P" }}</span>
                                 <span><i class="icon-location"></i>{{ event.location }}</span>
-
                             </div>
                             <p class="event-description">{{ event.description|linebreaks }}</p>
                         </div>
-                        </article>
+                    </article>
                     {% endfor %}
                 {% else %}
                     <p>There are no completed events yet.</p>

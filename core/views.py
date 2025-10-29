@@ -2,14 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
 from django.core.paginator import Paginator
-from django.contrib.auth import login, logout # Make sure login and logout are imported
-from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage
+from django.contrib.auth import login, logout
+from .models import Acusinema, Event, SiteSettings, ContactMessage, SliderImage, Reservation
 from .forms import ContactForm, CustomUserCreationForm, CustomAuthenticationForm
 from users.models import CustomUser
 from django.core.mail import send_mail
 from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
 
 def homepage(request):
     movies_on_homepage = Acusinema.objects.order_by('-created_at')[:3]
@@ -184,6 +185,43 @@ def verify_email(request, user_id):
 
     # For GET request or if POST fails
     return render(request, 'verify_email.html', {'user': user})
+
+@login_required # Sadece giriş yapmış kullanıcılar erişebilir
+def my_reservations_view(request):
+    """Kullanıcının kendi yaptığı rezervasyonları listeler."""
+    user_reservations = Reservation.objects.filter(user=request.user).select_related('event')
+    context = {
+        'reservations': user_reservations,
+    }
+    # Henüz oluşturmadık ama bu template'i kullanacağız
+    return render(request, 'my_reservations.html', context)
+
+@login_required # Sadece giriş yapmış kullanıcılar erişebilir
+def create_reservation_view(request, event_id):
+    """Belirli bir etkinlik için rezervasyon oluşturur."""
+    # Etkinliği bulmaya çalış, bulamazsa 404 hatası ver
+    event = get_object_or_404(Event, pk=event_id)
+
+    # Etkinliğin tarihi geçmiş mi diye kontrol et (opsiyonel ama mantıklı)
+    if event.event_date < timezone.now():
+        messages.error(request, f"'{event.title}' etkinliğinin tarihi geçtiği için rezervasyon yapamazsınız.")
+        return redirect('events') # Etkinlikler sayfasına geri yönlendir
+
+    try:
+        # Yeni rezervasyon oluşturmayı dene
+        Reservation.objects.create(user=request.user, event=event)
+        messages.success(request, f"'{event.title}' etkinliği için rezervasyonunuz başarıyla oluşturuldu!")
+        # Kullanıcıyı rezervasyonlarım sayfasına yönlendir
+        return redirect('my_reservations')
+    except IntegrityError:
+        # unique_together kısıtlaması nedeniyle hata oluşursa (yani zaten rezervasyon varsa)
+        messages.warning(request, f"'{event.title}' etkinliği için zaten bir rezervasyonunuz bulunmaktadır.")
+        # Kullanıcıyı yine rezervasyonlarım sayfasına yönlendir (veya etkinlikler sayfasına da olabilir)
+        return redirect('my_reservations')
+    except Exception as e:
+        # Beklenmedik başka bir hata olursa
+        messages.error(request, f"Rezervasyon oluşturulurken bir hata oluştu: {e}")
+        return redirect('events') # Etkinlikler sayfasına geri yönlendir
 
 def logout_view(request):
     logout(request)
