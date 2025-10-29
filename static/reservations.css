@@ -1,0 +1,136 @@
+/* static/reservations.css */
+
+.section--reservations {
+    max-width: 900px; /* İçeriği ortalamak için */
+    margin: 0 auto;
+    padding-top: var(--spacing-medium);
+}
+
+/* Mesaj Kutuları Stilleri */
+.alert-message {
+    padding: 15px;
+    color: white;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: #28a745; /* Yeşil */
+}
+
+.alert-error {
+    background-color: #dc3545; /* Kırmızı */
+}
+
+.alert-warning {
+    background-color: #ffc107; /* Sarı */
+    color: #333; /* Koyu yazı rengi */
+}
+
+/* Alternatif Rezervasyon Listesi Stilleri */
+.reservations-list-alt {
+    margin-top: var(--spacing-medium);
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Rezervasyon item'ları arası boşluk */
+}
+
+.reservation-item {
+    background-color: var(--color-bg-card);
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    border-left: 5px solid var(--color-secondary); /* Sol kenara mavi vurgu */
+    display: flex; /* Detaylar ve aksiyon butonu yan yana (ileride gerekirse) */
+    justify-content: space-between;
+    align-items: flex-start; /* Dikeyde yukarı hizala */
+    gap: 20px;
+}
+
+.reservation-details {
+    flex-grow: 1; /* Detaylar bölümü genişlesin */
+}
+
+.reservation-event-title {
+    margin: 0 0 15px 0; /* Başlık altı boşluk */
+    font-size: 1.4em;
+    color: var(--color-text-light);
+    font-weight: 600;
+}
+
+.reservation-info {
+    margin: 0 0 8px 0; /* Bilgi satırları arası boşluk */
+    font-size: 0.95em;
+    color: var(--color-text-subtle);
+    display: flex; /* Etiket ve değeri yan yana */
+    gap: 8px;
+    flex-wrap: wrap; /* Gerekirse alt satıra insin */
+}
+
+.reservation-info .info-label {
+    font-weight: 500;
+    color: var(--color-text-light);
+    min-width: 100px; /* Etiketlerin hizalı durması için */
+    flex-shrink: 0;
+}
+
+.reservation-info .info-value {
+    color: var(--color-text-subtle);
+}
+
+.reservation-info.booked-date .info-value {
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+
+/* İptal butonu için (opsiyonel, şimdilik yorumlu) */
+/*
+.reservation-action {
+    flex-shrink: 0;
+}
+
+.cancel-button-alt {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+.cancel-button-alt:hover {
+    background-color: #c82333;
+}
+*/
+
+/* Mobil Uyum */
+@media (max-width: 600px) {
+    .reservation-item {
+        flex-direction: column; /* Mobilde alt alta */
+        padding: 15px 20px;
+    }
+    .reservation-event-title {
+        font-size: 1.2em;
+        margin-bottom: 12px;
+    }
+    .reservation-info {
+        font-size: 0.9em;
+    }
+    .reservation-info .info-label {
+        min-width: 80px; /* Mobilde etiket genişliğini azalt */
+    }
+    /*
+    .cancel-button-alt {
+        width: 100%;
+        margin-top: 15px;
+        padding: 10px;
+    }
+    */
+}
